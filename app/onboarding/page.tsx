@@ -137,7 +137,7 @@ export default function OnboardingPage() {
 
           <div className="mb-6">
             <label className="text-secondary text-sm mb-2 block">
-              What's your primary focus area?
+              What&apos;s your primary focus area?
             </label>
             <input
               type="text"
@@ -294,7 +294,7 @@ export default function OnboardingPage() {
         <div>
           <div className="mb-6">
             <label className="text-secondary text-sm mb-2 block">
-              What's your most important task today?
+              What&apos;s your most important task today?
             </label>
             <input
               type="text"
@@ -332,7 +332,7 @@ export default function OnboardingPage() {
     },
     {
       id: 4,
-      title: 'You're All Set!',
+      title: "You're All Set!",
       subtitle: `Welcome aboard, ${userData.name || 'there'}!`,
       content: (
         <div className="text-center">
@@ -340,7 +340,7 @@ export default function OnboardingPage() {
           
           <div className="mb-8">
             <p className="text-secondary mb-4">
-              Your personalized workspace is ready. Here's what we've set up for you:
+              Your personalized workspace is ready. Here&apos;s what we&apos;ve set up for you:
             </p>
           </div>
 

@@ -39,13 +39,13 @@ export default function MagicLinkPage() {
             </div>
             <h2 className="mb-2">Check Your Email</h2>
             <p className="text-secondary">
-              We've sent you a magic link to sign in to Floe
+              We&apos;ve sent you a magic link to sign in to Floe
             </p>
           </div>
 
           <div className="glass p-4 mb-6">
             <p className="text-sm text-secondary mb-2">
-              Didn't receive the email?
+              Didn&apos;t receive the email?
             </p>
             <ul className="text-sm text-secondary text-left">
               <li>• Check your spam folder</li>

@@ -15,7 +15,7 @@ interface TimerSession {
 
 const inspirationalQuotes = [
   { text: 'The secret to getting ahead is getting started.', author: 'Mark Twain' },
-  { text: 'Focus is a matter of deciding what things you're not going to do.', author: 'John Carmack' },
+  { text: "Focus is a matter of deciding what things you're not going to do.", author: 'John Carmack' },
   { text: 'Deep work is the ability to focus without distraction on a cognitively demanding task.', author: 'Cal Newport' },
   { text: 'You are never too old to set another goal or to dream a new dream.', author: 'C.S. Lewis' },
   { text: 'The way to get started is to quit talking and begin doing.', author: 'Walt Disney' }
@@ -41,7 +41,7 @@ export default function EnhancedPomodoroTimer() {
   const [showSessionComplete, setShowSessionComplete] = useState(false);
   
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const { streak, updateStreak, getStreakStatus, calculateLevel, getAchievements } = useStreaks();
+  const { streak, updateStreak, calculateLevel } = useStreaks();
 
   const sessions = [
     { type: '45/15' as const, focusMinutes: 45, breakMinutes: 15, totalSessions: 3, name: 'Deep Work' },
@@ -91,7 +91,7 @@ export default function EnhancedPomodoroTimer() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isActive, isPaused, isBreak, currentSessionNum]);
+  }, [isActive, isPaused, isBreak, currentSessionNum]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSessionComplete = () => {
     const audio = new Audio('/sounds/notification.mp3');
@@ -170,7 +170,6 @@ export default function EnhancedPomodoroTimer() {
   const circumference = 2 * Math.PI * 120;
   const strokeDashoffset = circumference - (progress / 100) * circumference;
 
-  const streakStatus = getStreakStatus();
   const level = calculateLevel();
 
   return (
@@ -184,7 +183,7 @@ export default function EnhancedPomodoroTimer() {
           exit={{ opacity: 0, y: 10 }}
           className="text-center mb-6"
         >
-          <p className="text-secondary italic">"{currentQuote.text}"</p>
+          <p className="text-secondary italic">&quot;{currentQuote.text}&quot;</p>
           <p className="text-sm text-tertiary mt-2">— {currentQuote.author}</p>
         </motion.div>
       </AnimatePresence>

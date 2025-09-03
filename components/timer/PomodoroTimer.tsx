@@ -58,7 +58,7 @@ export default function PomodoroTimer() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [isActive, isPaused, isBreak, currentSession]);
+  }, [isActive, isPaused, isBreak, currentSession]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSessionComplete = () => {
     const audio = new Audio('/sounds/notification.mp3');

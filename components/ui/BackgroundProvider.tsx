@@ -26,14 +26,16 @@ export default function BackgroundProvider({ children }: { children: React.React
     }
   }, []);
 
-  const changeBackground = () => {
-    const nextBg = (currentBg + 1) % backgroundImages.length;
-    setCurrentBg(nextBg);
-    localStorage.setItem('currentBackground', nextBg.toString());
-  };
+  // Future feature: Allow users to change background
+  // const changeBackground = () => {
+  //   const nextBg = (currentBg + 1) % backgroundImages.length;
+  //   setCurrentBg(nextBg);
+  //   localStorage.setItem('currentBackground', nextBg.toString());
+  // };
 
   return (
     <>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
       <img 
         src={backgroundImages[currentBg]} 
         alt="Background" 

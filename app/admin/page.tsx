@@ -19,7 +19,7 @@ export default function AdminPage() {
     },
     {
       id: '2',
-      text: 'Focus is a matter of deciding what things you're not going to do.',
+      text: "Focus is a matter of deciding what things you're not going to do.",
       author: 'John Carmack',
       category: 'focus',
       active: true,

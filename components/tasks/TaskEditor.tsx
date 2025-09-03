@@ -18,7 +18,7 @@ interface TaskEditorProps {
 
 export default function TaskEditor({ data, onChange, placeholder = 'Start writing...', readOnly = false }: TaskEditorProps) {
   const editorRef = useRef<EditorJS | null>(null);
-  const [isReady, setIsReady] = useState(false);
+  const [, setIsReady] = useState(false);
 
   useEffect(() => {
     if (!editorRef.current) {
@@ -86,7 +86,7 @@ export default function TaskEditor({ data, onChange, placeholder = 'Start writin
         editorRef.current = null;
       }
     };
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div 

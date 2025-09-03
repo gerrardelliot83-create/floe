@@ -25,14 +25,14 @@ export default function DashboardPage() {
     // Calculate today's sessions
     const sessions = JSON.parse(localStorage.getItem('todaySessions') || '[]');
     const today = new Date().toDateString();
-    const todaySessionCount = sessions.filter((s: any) => 
+    const todaySessionCount = sessions.filter((s: { date: string }) => 
       new Date(s.date).toDateString() === today
     ).length;
     setTodaySessions(todaySessionCount);
 
     // Count completed tasks
     const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-    const completed = tasks.filter((t: any) => t.completed).length;
+    const completed = tasks.filter((t: { completed: boolean }) => t.completed).length;
     setTasksCompleted(completed);
 
     // Set greeting based on time
@@ -92,7 +92,7 @@ export default function DashboardPage() {
           </div>
 
           <div className="glass-card mt-8">
-            <h3 className="mb-4">Today's Progress</h3>
+            <h3 className="mb-4">Today&apos;s Progress</h3>
             <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
               <motion.div 
                 whileHover={{ scale: 1.05 }}

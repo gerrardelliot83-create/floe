@@ -6,7 +6,7 @@ const f = createUploadthing();
 export const ourFileRouter = {
   // Background image uploader
   backgroundUploader: f({ image: { maxFileSize: "4MB", maxFileCount: 1 } })
-    .middleware(async ({ req }) => {
+    .middleware(async () => {
       // Check if user is authenticated
       const supabase = await createClient();
       const { data: { user } } = await supabase.auth.getUser();
@@ -37,7 +37,7 @@ export const ourFileRouter = {
     
   // Profile avatar uploader
   avatarUploader: f({ image: { maxFileSize: "2MB", maxFileCount: 1 } })
-    .middleware(async ({ req }) => {
+    .middleware(async () => {
       const supabase = await createClient();
       const { data: { user } } = await supabase.auth.getUser();
       
@@ -64,7 +64,7 @@ export const ourFileRouter = {
     pdf: { maxFileSize: "8MB" },
     text: { maxFileSize: "1MB" }
   })
-    .middleware(async ({ req }) => {
+    .middleware(async () => {
       const supabase = await createClient();
       const { data: { user } } = await supabase.auth.getUser();
       

@@ -1,3 +1,5 @@
+'use client';
+
 import dynamic from 'next/dynamic';
 import BackgroundProvider from '@/components/ui/BackgroundProvider';
 import Navigation from '@/components/ui/Navigation';

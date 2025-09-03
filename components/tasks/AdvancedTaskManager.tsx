@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Task } from '@/lib/types/database';
 import TaskEditor from './TaskEditor';
 import { OutputData } from '@editorjs/editorjs';
@@ -42,7 +42,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
       id: Date.now().toString(),
       user_id: 'current-user',
       title: newTaskData.title,
-      content: newTaskData.content || undefined,
+      content: newTaskData.content ? (newTaskData.content as unknown as Record<string, unknown>) : undefined,
       completed: false,
       priority: newTaskData.priority,
       due_date: newTaskData.due_date || undefined,
@@ -132,7 +132,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
                 <select
                   className="glass-input flex-1"
                   value={newTaskData.priority}
-                  onChange={(e) => setNewTaskData({ ...newTaskData, priority: e.target.value as any })}
+                  onChange={(e) => setNewTaskData({ ...newTaskData, priority: e.target.value as 'low' | 'medium' | 'high' })}
                 >
                   <option value="low">Low Priority</option>
                   <option value="medium">Medium Priority</option>
@@ -212,7 +212,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
             <select 
               className="glass-input flex-1"
               value={filterPriority}
-              onChange={(e) => setFilterPriority(e.target.value as any)}
+              onChange={(e) => setFilterPriority(e.target.value as 'all' | 'low' | 'medium' | 'high')}
             >
               <option value="all">All Priorities</option>
               <option value="high">High</option>
@@ -223,7 +223,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
             <select 
               className="glass-input flex-1"
               value={filterStatus}
-              onChange={(e) => setFilterStatus(e.target.value as any)}
+              onChange={(e) => setFilterStatus(e.target.value as 'all' | 'active' | 'completed')}
             >
               <option value="all">All Tasks</option>
               <option value="active">Active</option>
@@ -355,7 +355,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
             <div className="mb-4">
               <h4 className="mb-3">Details</h4>
               {selectedTask.content ? (
-                <TaskEditor data={selectedTask.content} readOnly />
+                <TaskEditor data={selectedTask.content as unknown as OutputData} readOnly />
               ) : (
                 <p className="text-secondary">No details added</p>
               )}

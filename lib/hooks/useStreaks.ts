@@ -103,7 +103,7 @@ export function useStreaks(userId: string = 'current-user') {
   };
 
   const getAchievements = () => {
-    const achievements = [];
+    const achievements: { id: string; title: string; icon: string; unlocked: boolean }[] = [];
     
     if (streak.total_sessions >= 1) {
       achievements.push({ id: 'first', title: 'First Step', icon: '🎯', unlocked: true });

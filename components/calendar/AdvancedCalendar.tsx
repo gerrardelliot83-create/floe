@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
 import { CalendarEvent, Task } from '@/lib/types/database';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -225,7 +225,7 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
             </button>
             <select 
               value={viewMode}
-              onChange={(e) => setViewMode(e.target.value as any)}
+              onChange={(e) => setViewMode(e.target.value as 'month' | 'week' | 'day')}
               className="glass-input"
             >
               <option value="month">Month</option>
@@ -328,7 +328,7 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
                   <select
                     className="glass-input w-full mb-3"
                     value={newEvent.event_type}
-                    onChange={(e) => setNewEvent({ ...newEvent, event_type: e.target.value as any })}
+                    onChange={(e) => setNewEvent({ ...newEvent, event_type: e.target.value as 'deep_work' | 'task_deadline' | 'meeting' })}
                   >
                     <option value="deep_work">Deep Work Session</option>
                     <option value="task_deadline">Task Deadline</option>

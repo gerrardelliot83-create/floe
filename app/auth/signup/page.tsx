@@ -36,8 +36,8 @@ export default function SignupPage() {
       setTimeout(() => {
         router.push('/auth/magic-link');
       }, 2000);
-    } catch (error: any) {
-      setMessage(error.message || 'An error occurred');
+    } catch (error) {
+      setMessage((error as Error).message || 'An error occurred');
     } finally {
       setLoading(false);
     }

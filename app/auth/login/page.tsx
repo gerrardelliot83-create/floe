@@ -32,8 +32,8 @@ export default function LoginPage() {
       setTimeout(() => {
         router.push('/auth/magic-link');
       }, 2000);
-    } catch (error: any) {
-      setMessage(error.message || 'An error occurred');
+    } catch (error) {
+      setMessage((error as Error).message || 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -83,7 +83,7 @@ export default function LoginPage() {
 
             <div className="text-center mt-6">
               <p className="text-secondary">
-                Don't have an account?{' '}
+                Don&apos;t have an account?{' '}
                 <Link href="/auth/signup" className="text-primary">
                   Sign Up
                 </Link>

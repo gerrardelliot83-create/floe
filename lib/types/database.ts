@@ -12,7 +12,7 @@ export interface Task {
   id: string;
   user_id: string;
   title: string;
-  content?: any; // EditorJS data
+  content?: Record<string, unknown>; // EditorJS data
   completed: boolean;
   priority: 'low' | 'medium' | 'high';
   due_date?: string;
@@ -44,7 +44,7 @@ export interface CalendarEvent {
   event_type: 'deep_work' | 'task_deadline' | 'meeting';
   start_time: string;
   end_time: string;
-  recurring_pattern?: any;
+  recurring_pattern?: Record<string, unknown>;
   task_id?: string;
   session_config?: {
     session_type: '45/15' | '25/5' | 'custom';
