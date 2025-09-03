@@ -1,32 +1,48 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import BackgroundProvider from '@/components/ui/BackgroundProvider';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Task } from '@/lib/types/database';
+import './onboarding.css';
 
-interface OnboardingStep {
-  id: number;
-  title: string;
-  subtitle: string;
-  content: React.ReactNode;
+interface OnboardingData {
+  name: string;
+  country: string;
+  language: string;
+  workStyle: '45/15' | '25/5' | 'custom';
+  dailyGoal: number;
+  primaryFocus: string;
+  preferredTime: string;
+  firstTask: string;
 }
 
 export default function OnboardingPage() {
   const router = useRouter();
-  const [currentStep, setCurrentStep] = useState(0);
-  const [userData, setUserData] = useState({
+  const [currentStep, setCurrentStep] = useState(1);
+  const [userData, setUserData] = useState<OnboardingData>({
     name: '',
-    workStyle: '25/5' as '45/15' | '25/5' | 'custom',
+    country: 'USA',
+    language: 'English',
+    workStyle: '25/5',
     dailyGoal: 4,
     primaryFocus: '',
+    preferredTime: '',
     firstTask: '',
-    preferredTime: 'morning'
   });
 
+  useEffect(() => {
+    // Get name from localStorage if coming from signup
+    const pendingName = localStorage.getItem('pendingUserName');
+    if (pendingName) {
+      setUserData(prev => ({ ...prev, name: pendingName }));
+      localStorage.removeItem('pendingUserName');
+    }
+  }, []);
+
+  const totalSteps = 5;
+
   const nextStep = () => {
-    if (currentStep < steps.length - 1) {
+    if (currentStep < totalSteps) {
       setCurrentStep(currentStep + 1);
     } else {
       completeOnboarding();
@@ -34,24 +50,26 @@ export default function OnboardingPage() {
   };
 
   const previousStep = () => {
-    if (currentStep > 0) {
+    if (currentStep > 1) {
       setCurrentStep(currentStep - 1);
     }
   };
 
   const completeOnboarding = async () => {
-    // Save user preferences and create first task
-    // In real app, this would save to Supabase
-    localStorage.setItem('onboarded', 'true');
+    // Save user preferences
     localStorage.setItem('userPreferences', JSON.stringify(userData));
     
+    // Set onboarding cookie for middleware
+    document.cookie = 'onboarded=true; path=/; max-age=31536000'; // 1 year
+    
+    // Save first task if provided
     if (userData.firstTask) {
-      const task: Task = {
+      const task = {
         id: Date.now().toString(),
         user_id: 'current-user',
         title: userData.firstTask,
         completed: false,
-        priority: 'high',
+        priority: 'high' as const,
         created_at: new Date().toISOString(),
         updated_at: new Date().toISOString()
       };
@@ -59,389 +77,394 @@ export default function OnboardingPage() {
       localStorage.setItem('tasks', JSON.stringify([...existingTasks, task]));
     }
 
+    // Redirect to dashboard
     router.push('/dashboard');
   };
 
-  const startQuickSession = () => {
-    localStorage.setItem('onboarded', 'true');
-    localStorage.setItem('quickStart', 'true');
-    router.push('/timer');
+  const skipOnboarding = () => {
+    document.cookie = 'onboarded=true; path=/; max-age=31536000';
+    router.push('/dashboard');
   };
 
-  const steps: OnboardingStep[] = [
-    {
-      id: 0,
-      title: 'Welcome to Floe',
-      subtitle: 'Your personal productivity companion',
-      content: (
-        <div className="text-center">
-          <div className="mb-8">
-            <div className="text-8xl mb-4">🚀</div>
-            <p className="text-secondary mb-4">
-              Floe helps you achieve deep focus through intelligent time management, 
-              task organization, and mindful productivity practices.
-            </p>
-          </div>
-          
-          <div className="grid gap-4 mb-8">
-            <div className="glass p-4 text-left">
-              <h4 className="mb-2">⏱️ Pomodoro Timer</h4>
-              <p className="text-sm text-secondary">
-                Customizable focus sessions with smart breaks
-              </p>
-            </div>
-            <div className="glass p-4 text-left">
-              <h4 className="mb-2">📝 Smart Tasks</h4>
-              <p className="text-sm text-secondary">
-                Rich text editor with tags and priorities
-              </p>
-            </div>
-            <div className="glass p-4 text-left">
-              <h4 className="mb-2">📅 Deep Work Calendar</h4>
-              <p className="text-sm text-secondary">
-                Schedule and track your focus sessions
-              </p>
-            </div>
-          </div>
-
-          <div className="flex gap-3">
-            <button onClick={nextStep} className="btn-primary flex-1">
-              Get Started
-            </button>
-            <button onClick={startQuickSession} className="glass-button flex-1">
-              Quick Start
-            </button>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 1,
-      title: 'Personalize Your Experience',
-      subtitle: 'Tell us about yourself',
-      content: (
-        <div>
-          <div className="mb-6">
-            <label className="text-secondary text-sm mb-2 block">
-              What should we call you?
-            </label>
-            <input
-              type="text"
-              placeholder="Enter your name..."
-              className="glass-input w-full"
-              value={userData.name}
-              onChange={(e) => setUserData({ ...userData, name: e.target.value })}
-              autoFocus
-            />
-          </div>
-
-          <div className="mb-6">
-            <label className="text-secondary text-sm mb-2 block">
-              What&apos;s your primary focus area?
-            </label>
-            <input
-              type="text"
-              placeholder="e.g., Software Development, Writing, Studying..."
-              className="glass-input w-full"
-              value={userData.primaryFocus}
-              onChange={(e) => setUserData({ ...userData, primaryFocus: e.target.value })}
-            />
-          </div>
-
-          <div className="mb-6">
-            <label className="text-secondary text-sm mb-2 block">
-              When are you most productive?
-            </label>
-            <div className="grid grid-cols-3 gap-3">
-              {['morning', 'afternoon', 'evening'].map((time) => (
-                <button
-                  key={time}
-                  onClick={() => setUserData({ ...userData, preferredTime: time })}
-                  className={`glass-button capitalize ${
-                    userData.preferredTime === time ? 'border-primary bg-primary/10' : ''
-                  }`}
-                >
-                  {time}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="flex gap-3">
-            <button onClick={previousStep} className="glass-button flex-1">
-              Back
-            </button>
-            <button 
-              onClick={nextStep} 
-              className="btn-primary flex-1"
-              disabled={!userData.name}
-            >
-              Continue
-            </button>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 2,
-      title: 'Choose Your Work Style',
-      subtitle: 'Select your preferred focus session type',
-      content: (
-        <div>
-          <div className="mb-6">
-            <div className="flex-col gap-3">
-              <button
-                onClick={() => setUserData({ ...userData, workStyle: '25/5' })}
-                className={`glass p-4 text-left transition-all ${
-                  userData.workStyle === '25/5' ? 'border-primary bg-primary/10' : ''
-                }`}
-              >
-                <div className="flex-between">
-                  <div>
-                    <h4>🎯 Classic Pomodoro</h4>
-                    <p className="text-secondary text-sm mt-1">
-                      25 minutes focus, 5 minutes break
-                    </p>
-                    <p className="text-xs text-tertiary mt-2">
-                      Best for: Quick tasks, maintaining momentum
-                    </p>
-                  </div>
-                  {userData.workStyle === '25/5' && (
-                    <span className="text-primary text-2xl">✓</span>
-                  )}
-                </div>
-              </button>
-
-              <button
-                onClick={() => setUserData({ ...userData, workStyle: '45/15' })}
-                className={`glass p-4 text-left transition-all ${
-                  userData.workStyle === '45/15' ? 'border-primary bg-primary/10' : ''
-                }`}
-              >
-                <div className="flex-between">
-                  <div>
-                    <h4>🧠 Deep Work</h4>
-                    <p className="text-secondary text-sm mt-1">
-                      45 minutes focus, 15 minutes break
-                    </p>
-                    <p className="text-xs text-tertiary mt-2">
-                      Best for: Complex tasks, creative work
-                    </p>
-                  </div>
-                  {userData.workStyle === '45/15' && (
-                    <span className="text-primary text-2xl">✓</span>
-                  )}
-                </div>
-              </button>
-
-              <button
-                onClick={() => setUserData({ ...userData, workStyle: 'custom' })}
-                className={`glass p-4 text-left transition-all ${
-                  userData.workStyle === 'custom' ? 'border-primary bg-primary/10' : ''
-                }`}
-              >
-                <div className="flex-between">
-                  <div>
-                    <h4>⚙️ Custom</h4>
-                    <p className="text-secondary text-sm mt-1">
-                      Set your own focus and break times
-                    </p>
-                    <p className="text-xs text-tertiary mt-2">
-                      Best for: Personalized workflow
-                    </p>
-                  </div>
-                  {userData.workStyle === 'custom' && (
-                    <span className="text-primary text-2xl">✓</span>
-                  )}
-                </div>
-              </button>
-            </div>
-          </div>
-
-          <div className="mb-6">
-            <label className="text-secondary text-sm mb-2 block">
-              Daily session goal
-            </label>
-            <input
-              type="number"
-              min="1"
-              max="12"
-              className="glass-input w-full"
-              value={userData.dailyGoal}
-              onChange={(e) => setUserData({ ...userData, dailyGoal: parseInt(e.target.value) })}
-            />
-            <p className="text-xs text-tertiary mt-2">
-              Aim for {userData.dailyGoal} focused work sessions per day
-            </p>
-          </div>
-
-          <div className="flex gap-3">
-            <button onClick={previousStep} className="glass-button flex-1">
-              Back
-            </button>
-            <button onClick={nextStep} className="btn-primary flex-1">
-              Continue
-            </button>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 3,
-      title: 'Create Your First Task',
-      subtitle: 'What would you like to focus on today?',
-      content: (
-        <div>
-          <div className="mb-6">
-            <label className="text-secondary text-sm mb-2 block">
-              What&apos;s your most important task today?
-            </label>
-            <input
-              type="text"
-              placeholder="e.g., Complete project proposal, Study for exam..."
-              className="glass-input w-full"
-              value={userData.firstTask}
-              onChange={(e) => setUserData({ ...userData, firstTask: e.target.value })}
-              autoFocus
-            />
-          </div>
-
-          <div className="glass p-4 mb-6">
-            <h4 className="mb-3">💡 Tips for effective tasks:</h4>
-            <ul className="text-sm text-secondary space-y-2">
-              <li>• Be specific and actionable</li>
-              <li>• Break large projects into smaller tasks</li>
-              <li>• Set clear outcomes you can measure</li>
-              <li>• Focus on one task at a time</li>
-            </ul>
-          </div>
-
-          <div className="flex gap-3">
-            <button onClick={previousStep} className="glass-button flex-1">
-              Back
-            </button>
-            <button 
-              onClick={nextStep} 
-              className="btn-primary flex-1"
-            >
-              {userData.firstTask ? 'Continue' : 'Skip for now'}
-            </button>
-          </div>
-        </div>
-      )
-    },
-    {
-      id: 4,
-      title: "You're All Set!",
-      subtitle: `Welcome aboard, ${userData.name || 'there'}!`,
-      content: (
-        <div className="text-center">
-          <div className="text-8xl mb-6">🎉</div>
-          
-          <div className="mb-8">
-            <p className="text-secondary mb-4">
-              Your personalized workspace is ready. Here&apos;s what we&apos;ve set up for you:
-            </p>
-          </div>
-
-          <div className="glass p-4 mb-6 text-left">
-            <h4 className="mb-3">Your Configuration:</h4>
-            <div className="space-y-2 text-sm">
-              <div className="flex-between">
-                <span className="text-secondary">Work Style:</span>
-                <span>{userData.workStyle === 'custom' ? 'Custom' : userData.workStyle}</span>
-              </div>
-              <div className="flex-between">
-                <span className="text-secondary">Daily Goal:</span>
-                <span>{userData.dailyGoal} sessions</span>
-              </div>
-              <div className="flex-between">
-                <span className="text-secondary">Peak Time:</span>
-                <span className="capitalize">{userData.preferredTime}</span>
-              </div>
-              {userData.firstTask && (
-                <div className="flex-between">
-                  <span className="text-secondary">First Task:</span>
-                  <span className="text-primary">Ready to start!</span>
-                </div>
-              )}
-            </div>
-          </div>
-
-          <div className="flex gap-3">
-            <button 
-              onClick={() => {
-                completeOnboarding();
-                router.push('/timer');
-              }}
-              className="btn-primary flex-1"
-            >
-              🚀 Start First Session
-            </button>
-            <button 
-              onClick={completeOnboarding}
-              className="glass-button flex-1"
-            >
-              Go to Dashboard
-            </button>
-          </div>
-        </div>
-      )
-    }
-  ];
-
   return (
-    <BackgroundProvider>
-      <div className="min-h-screen flex-center p-4">
-        <div className="glass-card w-full max-w-2xl">
-          <div className="mb-8">
-            <div className="flex gap-2 justify-center mb-6">
-              {steps.map((step, index) => (
-                <div
-                  key={step.id}
-                  className={`h-1 flex-1 rounded-full transition-all ${
-                    index <= currentStep ? 'bg-primary' : 'bg-glass-border'
-                  }`}
-                />
-              ))}
-            </div>
-            
+    <div className="onboarding-container">
+      <div className="onboarding-card">
+        {/* Progress Header */}
+        <div className="onboarding-header">
+          {currentStep > 1 && (
+            <button onClick={previousStep} className="onboarding-back-btn">
+              ←
+            </button>
+          )}
+          <div className="onboarding-progress">
+            {[...Array(totalSteps)].map((_, index) => (
+              <div
+                key={index}
+                className={`progress-step ${
+                  index < currentStep ? 'completed' : ''
+                } ${index === currentStep - 1 ? 'active' : ''}`}
+              />
+            ))}
+          </div>
+        </div>
+
+        {/* Main Content */}
+        <div className="onboarding-content">
+          {/* Left Side - Form */}
+          <div className="onboarding-left">
             <AnimatePresence mode="wait">
-              <motion.div
-                key={currentStep}
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <h2 className="text-center mb-2">{steps[currentStep].title}</h2>
-                <p className="text-center text-secondary">{steps[currentStep].subtitle}</p>
-              </motion.div>
+              {currentStep === 1 && (
+                <motion.div
+                  key="step1"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                >
+                  <div className="step-badge">Step 1 of {totalSteps}</div>
+                  <h1 className="onboarding-title">
+                    👋 Hi{userData.name ? `, ${userData.name.split(' ')[0]}` : ''}! What&apos;s your origin story?
+                  </h1>
+                  <p className="onboarding-subtitle">
+                    Let&apos;s personalize your Floe experience. Don&apos;t worry, this only takes 2 minutes (we timed it).
+                  </p>
+
+                  <div className="onboarding-form">
+                    {!userData.name && (
+                      <div className="onboarding-input-group">
+                        <label className="onboarding-label">What should we call you?</label>
+                        <input
+                          type="text"
+                          className="onboarding-input"
+                          placeholder="Your name"
+                          value={userData.name}
+                          onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+                          autoFocus
+                        />
+                      </div>
+                    )}
+
+                    <div className="onboarding-input-group">
+                      <label className="onboarding-label">Which country do you live in?</label>
+                      <select 
+                        className="onboarding-select"
+                        value={userData.country}
+                        onChange={(e) => setUserData({ ...userData, country: e.target.value })}
+                      >
+                        <option value="USA">🇺🇸 United States</option>
+                        <option value="UK">🇬🇧 United Kingdom</option>
+                        <option value="Canada">🇨🇦 Canada</option>
+                        <option value="Australia">🇦🇺 Australia</option>
+                        <option value="Germany">🇩🇪 Germany</option>
+                        <option value="France">🇫🇷 France</option>
+                        <option value="Japan">🇯🇵 Japan</option>
+                        <option value="India">🇮🇳 India</option>
+                        <option value="Other">🌍 Other</option>
+                      </select>
+                    </div>
+
+                    <div className="onboarding-input-group">
+                      <label className="onboarding-label">What language(s) do you speak?</label>
+                      <select 
+                        className="onboarding-select"
+                        value={userData.language}
+                        onChange={(e) => setUserData({ ...userData, language: e.target.value })}
+                      >
+                        <option value="English">English</option>
+                        <option value="Spanish">Español</option>
+                        <option value="French">Français</option>
+                        <option value="German">Deutsch</option>
+                        <option value="Japanese">日本語</option>
+                        <option value="Chinese">中文</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+
+                    <button onClick={nextStep} className="onboarding-continue-btn">
+                      Continue →
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {currentStep === 2 && (
+                <motion.div
+                  key="step2"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                >
+                  <div className="step-badge">Step 2 of {totalSteps}</div>
+                  <h1 className="onboarding-title">
+                    🎯 What brings you to Floe?
+                  </h1>
+                  <p className="onboarding-subtitle">
+                    Help us understand your productivity journey. What&apos;s your main focus area?
+                  </p>
+
+                  <div className="onboarding-form">
+                    <div className="onboarding-input-group">
+                      <input
+                        type="text"
+                        className="onboarding-input"
+                        placeholder="e.g., Software Development, Writing, Design, Study..."
+                        value={userData.primaryFocus}
+                        onChange={(e) => setUserData({ ...userData, primaryFocus: e.target.value })}
+                        autoFocus
+                      />
+                    </div>
+
+                    <div className="choice-cards">
+                      <div className="choice-card-title" style={{ marginTop: '1rem', marginBottom: '1rem' }}>
+                        Popular Focus Areas:
+                      </div>
+                      {[
+                        '💻 Programming & Development',
+                        '✍️ Writing & Content Creation',
+                        '🎨 Design & Creative Work',
+                        '📚 Study & Research',
+                        '💼 Business & Management',
+                        '🎯 Personal Projects'
+                      ].map((area) => (
+                        <button
+                          key={area}
+                          className={`choice-card ${userData.primaryFocus === area.slice(2) ? 'selected' : ''}`}
+                          onClick={() => setUserData({ ...userData, primaryFocus: area.slice(2) })}
+                        >
+                          <div className="choice-card-title">{area}</div>
+                        </button>
+                      ))}
+                    </div>
+
+                    <button 
+                      onClick={nextStep} 
+                      className="onboarding-continue-btn"
+                      disabled={!userData.primaryFocus}
+                    >
+                      Continue →
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {currentStep === 3 && (
+                <motion.div
+                  key="step3"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                >
+                  <div className="step-badge">Step 3 of {totalSteps}</div>
+                  <h1 className="onboarding-title">
+                    ⏰ When do you do your best work?
+                  </h1>
+                  <p className="onboarding-subtitle">
+                    We&apos;ll optimize your experience based on your peak productivity hours.
+                  </p>
+
+                  <div className="onboarding-form">
+                    <div className="time-pills">
+                      {[
+                        '🌅 Early Bird (5-8 AM)',
+                        '☀️ Morning (8-12 PM)',
+                        '🌤️ Afternoon (12-5 PM)',
+                        '🌆 Evening (5-9 PM)',
+                        '🦉 Night Owl (9 PM-2 AM)',
+                        '🎲 It varies'
+                      ].map((time) => (
+                        <button
+                          key={time}
+                          className={`time-pill ${userData.preferredTime === time ? 'selected' : ''}`}
+                          onClick={() => setUserData({ ...userData, preferredTime: time })}
+                        >
+                          {time}
+                        </button>
+                      ))}
+                    </div>
+
+                    <button 
+                      onClick={nextStep} 
+                      className="onboarding-continue-btn"
+                      disabled={!userData.preferredTime}
+                      style={{ marginTop: '2rem' }}
+                    >
+                      Continue →
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {currentStep === 4 && (
+                <motion.div
+                  key="step4"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                >
+                  <div className="step-badge">Step 4 of {totalSteps}</div>
+                  <h1 className="onboarding-title">
+                    🚀 Choose your work rhythm
+                  </h1>
+                  <p className="onboarding-subtitle">
+                    Different tasks need different focus styles. Which one resonates with you?
+                  </p>
+
+                  <div className="onboarding-form">
+                    <div className="choice-cards">
+                      <button
+                        className={`choice-card ${userData.workStyle === '25/5' ? 'selected' : ''}`}
+                        onClick={() => setUserData({ ...userData, workStyle: '25/5' })}
+                      >
+                        <div className="choice-card-title">🍅 Classic Pomodoro</div>
+                        <div className="choice-card-description">
+                          25 min focus, 5 min break • Perfect for maintaining momentum
+                        </div>
+                      </button>
+                      
+                      <button
+                        className={`choice-card ${userData.workStyle === '45/15' ? 'selected' : ''}`}
+                        onClick={() => setUserData({ ...userData, workStyle: '45/15' })}
+                      >
+                        <div className="choice-card-title">🧠 Deep Work</div>
+                        <div className="choice-card-description">
+                          45 min focus, 15 min break • Ideal for complex tasks
+                        </div>
+                      </button>
+                      
+                      <button
+                        className={`choice-card ${userData.workStyle === 'custom' ? 'selected' : ''}`}
+                        onClick={() => setUserData({ ...userData, workStyle: 'custom' })}
+                      >
+                        <div className="choice-card-title">⚙️ Flexible</div>
+                        <div className="choice-card-description">
+                          Customize per session • Adapt to your daily needs
+                        </div>
+                      </button>
+                    </div>
+
+                    <div className="onboarding-input-group" style={{ marginTop: '2rem' }}>
+                      <label className="onboarding-label">
+                        How many focus sessions do you want to complete daily?
+                      </label>
+                      <input
+                        type="number"
+                        min="1"
+                        max="12"
+                        className="onboarding-input"
+                        value={userData.dailyGoal}
+                        onChange={(e) => setUserData({ ...userData, dailyGoal: parseInt(e.target.value) })}
+                      />
+                      <p className="text-xs text-tertiary mt-2">
+                        Most users start with 4-6 sessions per day
+                      </p>
+                    </div>
+
+                    <button onClick={nextStep} className="onboarding-continue-btn">
+                      Continue →
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+
+              {currentStep === 5 && (
+                <motion.div
+                  key="step5"
+                  initial={{ opacity: 0, x: 20 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -20 }}
+                >
+                  <div className="step-badge">Last step!</div>
+                  <h1 className="onboarding-title">
+                    ✨ Let&apos;s start with your first win
+                  </h1>
+                  <p className="onboarding-subtitle">
+                    What&apos;s one thing you want to accomplish today? We&apos;ll help you crush it!
+                  </p>
+
+                  <div className="onboarding-form">
+                    <div className="onboarding-input-group">
+                      <input
+                        type="text"
+                        className="onboarding-input"
+                        placeholder="e.g., Finish project proposal, Write 500 words, Complete Chapter 3..."
+                        value={userData.firstTask}
+                        onChange={(e) => setUserData({ ...userData, firstTask: e.target.value })}
+                        autoFocus
+                      />
+                    </div>
+
+                    <div style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '0.5rem', marginTop: '1rem' }}>
+                      <p className="text-sm" style={{ color: '#0369a1' }}>
+                        💡 <strong>Pro tip:</strong> Start with something you can complete in 1-2 focus sessions. 
+                        Small wins build unstoppable momentum!
+                      </p>
+                    </div>
+
+                    <div style={{ display: 'flex', gap: '1rem', marginTop: '2rem' }}>
+                      <button 
+                        onClick={completeOnboarding} 
+                        className="onboarding-continue-btn"
+                        style={{ flex: 1 }}
+                      >
+                        {userData.firstTask ? '🎯 Start Focusing!' : 'Skip & Explore'}
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
             </AnimatePresence>
           </div>
 
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={currentStep}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              transition={{ duration: 0.3 }}
-            >
-              {steps[currentStep].content}
-            </motion.div>
-          </AnimatePresence>
+          {/* Right Side - Community Showcase */}
+          <div className="onboarding-right">
+            <div className="community-showcase">
+              <div className="showcase-header">
+                <span>🌍</span>
+                <h3 className="showcase-title">Join 69,273+ members</h3>
+              </div>
+              
+              <div className="showcase-members">
+                {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                  /* eslint-disable-next-line @next/next/no-img-element */
+                  <img
+                    key={i}
+                    src={`https://i.pravatar.cc/96?img=${i + 10}`}
+                    alt={`Member ${i}`}
+                    className="member-avatar"
+                  />
+                ))}
+              </div>
 
-          <div className="mt-8 text-center">
-            <button 
-              onClick={() => router.push('/dashboard')}
-              className="text-sm text-tertiary hover:text-secondary transition-colors"
-            >
+              <p className="text-sm text-secondary mb-3">
+                Thousands of people from around the world have already joined the Floe community.
+              </p>
+
+              <div className="showcase-stats">
+                <div className="stat-item">
+                  <span className="stat-label">Total focus time</span>
+                  <span className="stat-value">2.3M hours</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Tasks completed</span>
+                  <span className="stat-value">847K+</span>
+                </div>
+                <div className="stat-item">
+                  <span className="stat-label">Average streak</span>
+                  <span className="stat-value">12 days</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Skip button */}
+        {currentStep === 1 && (
+          <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+            <button onClick={skipOnboarding} className="onboarding-skip-btn">
               Skip onboarding →
             </button>
           </div>
-        </div>
+        )}
       </div>
-    </BackgroundProvider>
+    </div>
   );
 }

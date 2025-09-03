@@ -1,0 +1,410 @@
+/* Onboarding Styles */
+
+.onboarding-container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #e0f2fe 0%, #ddd6fe 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.onboarding-card {
+  background: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 60px -12px rgba(0, 0, 0, 0.15);
+  max-width: 900px;
+  width: 100%;
+  padding: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Progress Header */
+.onboarding-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.onboarding-back-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid #e2e8f0;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #64748b;
+}
+
+.onboarding-back-btn:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+.onboarding-progress {
+  flex: 1;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.progress-step {
+  height: 4px;
+  flex: 1;
+  background: #e2e8f0;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.progress-step.active {
+  background: var(--primary);
+}
+
+.progress-step.completed {
+  background: var(--primary);
+}
+
+/* Main Content Area */
+.onboarding-content {
+  display: flex;
+  gap: 4rem;
+  align-items: flex-start;
+}
+
+.onboarding-left {
+  flex: 1;
+}
+
+.onboarding-right {
+  width: 320px;
+  position: relative;
+}
+
+/* Step Badge */
+.step-badge {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin-bottom: 1rem;
+}
+
+/* Title and Subtitle */
+.onboarding-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 0.75rem;
+  font-family: var(--font-heading);
+  line-height: 1.2;
+}
+
+.onboarding-greeting {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.onboarding-subtitle {
+  font-size: 1.125rem;
+  color: #64748b;
+  margin-bottom: 2.5rem;
+  line-height: 1.6;
+}
+
+/* Form Elements */
+.onboarding-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.onboarding-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.onboarding-label {
+  font-size: 0.9375rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+.onboarding-input {
+  padding: 0.875rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: all 0.2s;
+  background: white;
+}
+
+.onboarding-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+.onboarding-select {
+  padding: 0.875rem 1rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.onboarding-select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+}
+
+/* Choice Cards */
+.choice-cards {
+  display: grid;
+  gap: 1rem;
+}
+
+.choice-card {
+  padding: 1.25rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: left;
+}
+
+.choice-card:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.choice-card.selected {
+  border-color: var(--primary);
+  background: rgba(0, 212, 255, 0.05);
+}
+
+.choice-card-title {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+  margin-bottom: 0.25rem;
+}
+
+.choice-card-description {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+/* Time Pills */
+.time-pills {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.time-pill {
+  padding: 0.625rem 1.25rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 2rem;
+  background: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9375rem;
+  color: #64748b;
+}
+
+.time-pill:hover {
+  border-color: #cbd5e1;
+  background: #f8fafc;
+}
+
+.time-pill.selected {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: white;
+}
+
+/* Continue Button */
+.onboarding-continue-btn {
+  padding: 0.875rem 2rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  margin-top: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.onboarding-continue-btn:hover {
+  background: #00a8cc;
+  transform: translateY(-1px);
+}
+
+.onboarding-continue-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Skip Button */
+.onboarding-skip-btn {
+  padding: 0.875rem 2rem;
+  background: transparent;
+  color: #64748b;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.onboarding-skip-btn:hover {
+  background: #f8fafc;
+}
+
+/* Right Side - Community Showcase */
+.community-showcase {
+  background: #f8fafc;
+  border-radius: 1rem;
+  padding: 1.5rem;
+  position: sticky;
+  top: 2rem;
+}
+
+.showcase-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.showcase-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.showcase-members {
+  display: flex;
+  flex-wrap: wrap;
+  gap: -8px;
+  margin-bottom: 1rem;
+}
+
+.member-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 0.5rem;
+  object-fit: cover;
+  border: 3px solid white;
+  margin-right: -8px;
+}
+
+.member-avatar:nth-child(even) {
+  margin-top: 8px;
+}
+
+.showcase-stats {
+  padding-top: 1rem;
+  border-top: 1px solid #e2e8f0;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.stat-value {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Celebration Screen */
+.celebration-content {
+  text-align: center;
+  padding: 2rem;
+}
+
+.celebration-icon {
+  font-size: 5rem;
+  margin-bottom: 2rem;
+  animation: bounce 1s ease-in-out;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
+}
+
+.celebration-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 1rem;
+  font-family: var(--font-heading);
+}
+
+.celebration-message {
+  font-size: 1.25rem;
+  color: #64748b;
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.celebration-buttons {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .onboarding-card {
+    padding: 2rem 1.5rem;
+  }
+
+  .onboarding-content {
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .onboarding-right {
+    width: 100%;
+    display: none;
+  }
+
+  .onboarding-title {
+    font-size: 2rem;
+  }
+
+  .choice-cards {
+    grid-template-columns: 1fr;
+  }
+
+  .time-pills {
+    justify-content: center;
+  }
+}
