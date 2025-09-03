@@ -1,0 +1,40 @@
+{
+  "name": "floe",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --turbopack",
+    "build": "next build --turbopack",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@editorjs/checklist": "^1.6.0",
+    "@editorjs/code": "^2.9.3",
+    "@editorjs/editorjs": "^2.30.8",
+    "@editorjs/embed": "^2.7.6",
+    "@editorjs/header": "^2.8.8",
+    "@editorjs/inline-code": "^1.5.2",
+    "@editorjs/list": "^2.0.8",
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.57.0",
+    "@uploadthing/react": "^7.3.3",
+    "date-fns": "^4.1.0",
+    "framer-motion": "^12.23.12",
+    "next": "15.5.2",
+    "react": "19.1.0",
+    "react-calendar": "^6.0.0",
+    "react-dom": "19.1.0",
+    "react-hot-toast": "^2.6.0",
+    "uploadthing": "^7.7.4"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.2",
+    "typescript": "^5"
+  }
+}
