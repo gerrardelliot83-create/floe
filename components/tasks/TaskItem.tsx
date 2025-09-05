@@ -6,7 +6,6 @@ import { CSS } from '@dnd-kit/utilities';
 import { 
   CheckCircleIcon, 
   ClockIcon, 
-  BoltIcon,
   TagIcon,
   CalendarIcon,
   FolderIcon

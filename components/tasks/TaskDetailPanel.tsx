@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { XMarkIcon, ClockIcon, BoltIcon, CalendarIcon, TagIcon, LinkIcon, PaperClipIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
+import { XMarkIcon, ClockIcon, CalendarIcon, TagIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
 import useStore from '@/lib/store';
 import dynamic from 'next/dynamic';
 import { format } from 'date-fns';
@@ -92,7 +92,7 @@ export default function TaskDetailPanel({ taskId, onClose }: TaskDetailPanelProp
             <select
               value={priority}
               onChange={(e) => {
-                setPriority(e.target.value as any);
+                setPriority(e.target.value as 'critical' | 'high' | 'medium' | 'low');
                 handleSave();
               }}
               className="input w-full"
@@ -109,7 +109,7 @@ export default function TaskDetailPanel({ taskId, onClose }: TaskDetailPanelProp
             <select
               value={energy}
               onChange={(e) => {
-                setEnergy(e.target.value as any);
+                setEnergy(e.target.value as 'high' | 'medium' | 'low');
                 handleSave();
               }}
               className="input w-full"

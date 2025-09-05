@@ -14,7 +14,7 @@ import {
 import { StarIcon as StarSolidIcon } from '@heroicons/react/24/solid';
 import useStore from '@/lib/store';
 import { DeepWorkSession } from '@/lib/types/session.types';
-import { format, formatDistanceStrict } from 'date-fns';
+import { formatDistanceStrict } from 'date-fns';
 
 interface SessionReviewProps {
   session: DeepWorkSession;
@@ -87,7 +87,7 @@ export default function SessionReview({ session, completedTasks, notes, onClose 
         {/* Header */}
         <div className="bg-gradient-to-r from-sunglow/20 to-sunglow/5 p-6 border-b border-border-dark">
           <h2 className="text-2xl font-bold text-primary mb-2">Session Complete!</h2>
-          <p className="text-secondary">Great work! Let's review your session.</p>
+          <p className="text-secondary">Great work! Let&apos;s review your session.</p>
         </div>
 
         <div className="p-6 overflow-y-auto max-h-[calc(90vh-200px)]">

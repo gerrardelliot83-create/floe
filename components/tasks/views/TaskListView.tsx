@@ -13,8 +13,6 @@ interface TaskListViewProps {
 export default function TaskListView({ tasks, onTaskSelect }: TaskListViewProps) {
   // Group tasks by time of day
   const groupTasksByTime = () => {
-    const now = new Date();
-    const currentHour = now.getHours();
     
     const morning = tasks.filter(t => {
       if (!t.due_date) return false;
@@ -50,7 +48,7 @@ export default function TaskListView({ tasks, onTaskSelect }: TaskListViewProps)
   }: { 
     title: string; 
     tasks: ExtendedTask[]; 
-    icon: any; 
+    icon: React.ComponentType<{ className?: string }>; 
     color: string;
   }) => {
     if (tasks.length === 0) return null;

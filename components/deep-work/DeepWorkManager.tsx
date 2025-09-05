@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import useStore from '@/lib/store';
 import SessionPlanning from './SessionPlanning';
 import EnhancedFocusMode from './EnhancedFocusMode';
@@ -42,17 +42,21 @@ export default function DeepWorkManager() {
     ? sessions.history.reduce((sum, s) => sum + (s.stats?.completionRate || 0), 0) / sessions.history.length
     : 0;
 
-  const handleStartSession = (config: any) => {
+  const handleStartSession = (config: {
+    duration: number;
+    breakDuration: number;
+    taskIds: string[];
+    focusType: string;
+    sessionGoal?: string;
+  }) => {
     const newSession: DeepWorkSession = {
       id: Date.now().toString(),
-      userId: user?.id || '',
       startTime: new Date().toISOString(),
       duration: config.duration,
-      breakDuration: config.breakDuration,
       taskIds: config.taskIds,
-      focusType: config.focusType,
-      goal: config.sessionGoal,
-      status: 'active',
+      focusType: config.focusType as 'deep' | 'shallow' | 'creative' | 'meeting',
+      sessionGoal: config.sessionGoal,
+      completed: false,
     };
     
     startSession(newSession);

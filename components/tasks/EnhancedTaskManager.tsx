@@ -1,10 +1,10 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import useStore from '@/lib/store';
-import { ExtendedTask, TaskView, TaskGroup, MatrixQuadrant, BoardColumn } from '@/lib/types/task.types';
+import { ExtendedTask, TaskView } from '@/lib/types/task.types';
 import TaskListView from './views/TaskListView';
 import TaskMatrixView from './views/TaskMatrixView';
 import TaskBoardView from './views/TaskBoardView';

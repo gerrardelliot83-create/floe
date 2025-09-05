@@ -3,15 +3,12 @@
 import { useState } from 'react';
 import { 
   ClockIcon, 
-  BoltIcon, 
   CheckCircleIcon,
   XMarkIcon,
   PlayIcon,
-  DocumentTextIcon,
   SparklesIcon
 } from '@heroicons/react/24/outline';
 import useStore from '@/lib/store';
-import TaskItem from '../tasks/TaskItem';
 import { ExtendedTask } from '@/lib/types/task.types';
 
 interface SessionPlanningProps {

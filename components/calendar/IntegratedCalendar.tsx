@@ -3,9 +3,6 @@
 import { useState } from 'react';
 import { 
   CalendarIcon, 
-  ViewColumnsIcon,
-  ListBulletIcon,
-  Squares2X2Icon,
   ChevronLeftIcon,
   ChevronRightIcon,
   PlusIcon
@@ -13,20 +10,19 @@ import {
 import useStore from '@/lib/store';
 import TimeBlockingView from './TimeBlockingView';
 import { format, startOfWeek, endOfWeek, startOfMonth, endOfMonth, eachDayOfInterval, isSameDay, isToday, addMonths, subMonths } from 'date-fns';
-import { CalendarEvent } from '@/lib/types/calendar.types';
+import { CalendarEvent } from '@/lib/types/database';
 
 type ViewMode = 'day' | 'week' | 'month' | 'agenda';
 
 export default function IntegratedCalendar() {
-  const { calendar, tasks, sessions } = useStore();
+  const { calendar, tasks } = useStore();
   const [viewMode, setViewMode] = useState<ViewMode>('day');
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [showEventModal, setShowEventModal] = useState(false);
 
   // Get events for date range
   const getEventsForDate = (date: Date) => {
     return calendar.events.filter(event => 
-      isSameDay(new Date(event.date), date)
+      isSameDay(new Date(event.start_time), date)
     );
   };
 
@@ -92,7 +88,7 @@ export default function IntegratedCalendar() {
                         key={event.id}
                         className="p-1 text-xs rounded bg-purple-500/10 text-purple-500 truncate"
                       >
-                        {format(new Date(event.date), 'h:mm a')} {event.title}
+                        {format(new Date(event.start_time), 'h:mm a')} {event.title}
                       </div>
                     ))}
                     
@@ -216,8 +212,8 @@ export default function IntegratedCalendar() {
   const renderAgendaView = () => {
     // Get all upcoming events and tasks
     const upcomingEvents = calendar.events
-      .filter(event => new Date(event.date) >= new Date())
-      .sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      .filter(event => new Date(event.start_time) >= new Date())
+      .sort((a, b) => new Date(a.start_time).getTime() - new Date(b.start_time).getTime())
       .slice(0, 10);
 
     const upcomingTasks = tasks.items
@@ -230,8 +226,8 @@ export default function IntegratedCalendar() {
       ...upcomingEvents.map(e => ({ ...e, itemType: 'event' as const })),
       ...upcomingTasks.map(t => ({ ...t, itemType: 'task' as const }))
     ].sort((a, b) => {
-      const dateA = 'date' in a ? new Date(a.date) : new Date(a.due_date!);
-      const dateB = 'date' in b ? new Date(b.date) : new Date(b.due_date!);
+      const dateA = 'start_time' in a ? new Date(a.start_time) : new Date(a.due_date!);
+      const dateB = 'start_time' in b ? new Date(b.start_time) : new Date(b.due_date!);
       return dateA.getTime() - dateB.getTime();
     });
 
@@ -252,8 +248,7 @@ export default function IntegratedCalendar() {
                   <div className="flex-1">
                     <h3 className="font-medium text-primary">{event.title}</h3>
                     <p className="text-sm text-secondary">
-                      {format(new Date(event.date), 'MMM d, h:mm a')}
-                      {event.duration && ` • ${event.duration} min`}
+                      {format(new Date(event.start_time), 'MMM d, h:mm a')}
                     </p>
                   </div>
                   <span className="px-2 py-1 text-xs bg-purple-500/10 text-purple-500 rounded">
@@ -262,14 +257,14 @@ export default function IntegratedCalendar() {
                 </div>
               );
             } else {
-              const task = item as any;
+              const task = item as { id: string; title: string; priority: string; due_date?: string };
               return (
                 <div key={`task-${task.id}`} className="card flex items-center gap-4">
                   <div className="w-1 h-12 bg-blue-500 rounded-full" />
                   <div className="flex-1">
                     <h3 className="font-medium text-primary">{task.title}</h3>
                     <p className="text-sm text-secondary">
-                      Due: {format(new Date(task.due_date), 'MMM d, h:mm a')}
+                      Due: {task.due_date && format(new Date(task.due_date), 'MMM d, h:mm a')}
                     </p>
                   </div>
                   <span className={`px-2 py-1 text-xs rounded ${
@@ -350,7 +345,7 @@ export default function IntegratedCalendar() {
           </div>
 
           <button
-            onClick={() => setShowEventModal(true)}
+            onClick={() => {}}
             className="btn btn-primary btn-sm flex items-center gap-2"
           >
             <PlusIcon className="w-4 h-4" />

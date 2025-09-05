@@ -27,8 +27,7 @@ export default function CommandPalette() {
     toggleQuickAdd,
     setSelectedView,
     tasks,
-    selectTask,
-    startSession
+    selectTask
   } = useStore();
   
   const [search, setSearch] = useState('');

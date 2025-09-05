@@ -13,7 +13,6 @@ import {
   ChartBarIcon,
   Cog6ToothIcon,
   PlusIcon,
-  MagnifyingGlassIcon,
   ArrowRightStartOnRectangleIcon,
   CommandLineIcon,
 } from '@heroicons/react/24/outline';

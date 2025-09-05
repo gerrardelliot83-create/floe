@@ -23,9 +23,9 @@ export default function DashboardPage() {
   const [userName, setUserName] = useState('');
   const [greeting, setGreeting] = useState('');
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [activeTimer, setActiveTimer] = useState(null);
-  const [todayTasks, setTodayTasks] = useState<any[]>([]);
-  const [priorityTask, setPriorityTask] = useState<any>(null);
+  const [activeTimer] = useState(null);
+  const [todayTasks, setTodayTasks] = useState<{ id: string; title: string; completed: boolean; priority: string; completedAt?: string }[]>([]);
+  const [priorityTask, setPriorityTask] = useState<{ id: string; title: string; completed: boolean; priority: string; description?: string } | null>(null);
 
   useEffect(() => {
     // Get user preferences
@@ -45,9 +45,9 @@ export default function DashboardPage() {
 
     // Get tasks
     const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
-    const activeTasks = tasks.filter((t: any) => !t.completed);
-    const completedToday = tasks.filter((t: any) => {
-      if (!t.completed) return false;
+    const activeTasks = tasks.filter((t: { completed: boolean }) => !t.completed);
+    const completedToday = tasks.filter((t: { completed: boolean; completedAt?: string }) => {
+      if (!t.completed || !t.completedAt) return false;
       const completedDate = new Date(t.completedAt);
       return completedDate.toDateString() === today;
     }).length;
@@ -56,7 +56,7 @@ export default function DashboardPage() {
     setTodayTasks(activeTasks.slice(0, 5));
     
     // Set priority task (highest priority or first task)
-    const priority = activeTasks.find((t: any) => t.priority === 'high') || activeTasks[0];
+    const priority = activeTasks.find((t: { priority: string }) => t.priority === 'high') || activeTasks[0];
     setPriorityTask(priority);
 
     // Set greeting based on time
@@ -73,7 +73,7 @@ export default function DashboardPage() {
     return () => clearInterval(timer);
   }, []);
 
-  const streakStatus = getStreakStatus();
+  // const streakStatus = getStreakStatus();
   const level = calculateLevel();
 
   const formatTime = (date: Date) => {
@@ -151,7 +151,7 @@ export default function DashboardPage() {
               className="card"
             >
               <div className="card-header">
-                <h2 className="card-title">Today's Priority</h2>
+                <h2 className="card-title">Today&apos;s Priority</h2>
               </div>
               <div className="card-content">
                 {priorityTask ? (

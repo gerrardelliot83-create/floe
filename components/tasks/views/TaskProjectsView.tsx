@@ -5,7 +5,6 @@ import { ExtendedTask, Project } from '@/lib/types/task.types';
 import TaskItem from '../TaskItem';
 import { 
   FolderIcon, 
-  FolderOpenIcon, 
   ChevronRightIcon,
   ChevronDownIcon,
   PlusIcon,

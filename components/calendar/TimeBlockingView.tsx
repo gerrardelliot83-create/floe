@@ -5,16 +5,14 @@ import {
   ClockIcon, 
   PlusIcon, 
   TrashIcon,
-  PencilIcon,
   CheckIcon,
-  XMarkIcon,
   ChevronLeftIcon,
   ChevronRightIcon
 } from '@heroicons/react/24/outline';
 import useStore from '@/lib/store';
 import { format, addDays, startOfDay, endOfDay, isSameDay, addMinutes, differenceInMinutes } from 'date-fns';
-import { CalendarEvent } from '@/lib/types/calendar.types';
-import { ExtendedTask } from '@/lib/types/task.types';
+import { CalendarEvent } from '@/lib/types/database';
+// import { ExtendedTask } from '@/lib/types/task.types';
 
 interface TimeBlockingViewProps {
   date?: Date;
@@ -58,18 +56,18 @@ export default function TimeBlockingView({ date = new Date(), onDateChange }: Ti
     const dayEnd = endOfDay(selectedDate);
     
     const dayEvents = calendar.events.filter(event => {
-      const eventDate = new Date(event.date);
+      const eventDate = new Date(event.start_time);
       return eventDate >= dayStart && eventDate <= dayEnd;
     });
 
     const blocks: TimeBlock[] = dayEvents.map(event => ({
       id: event.id,
-      startTime: new Date(event.date),
-      endTime: addMinutes(new Date(event.date), event.duration || 60),
+      startTime: new Date(event.start_time),
+      endTime: new Date(event.end_time),
       title: event.title,
-      type: event.type as any,
-      taskId: event.taskId,
-      color: getBlockColor(event.type),
+      type: event.event_type === 'deep_work' ? 'focus' : 'event' as 'task' | 'event' | 'break' | 'focus',
+      taskId: event.task_id,
+      color: getBlockColor(event.event_type),
     }));
 
     setTimeBlocks(blocks);
@@ -139,14 +137,14 @@ export default function TimeBlockingView({ date = new Date(), onDateChange }: Ti
   const saveBlock = (block: TimeBlock) => {
     const event: CalendarEvent = {
       id: block.id,
+      user_id: '',
       title: block.title,
-      date: block.startTime.toISOString(),
-      duration: differenceInMinutes(block.endTime, block.startTime),
-      type: block.type,
-      taskId: block.taskId,
-      userId: '',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      start_time: block.startTime.toISOString(),
+      end_time: block.endTime.toISOString(),
+      event_type: block.type === 'focus' ? 'deep_work' : 'meeting',
+      task_id: block.taskId,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
     };
     
     if (calendar.events.find(e => e.id === block.id)) {
@@ -369,15 +367,14 @@ export default function TimeBlockingView({ date = new Date(), onDateChange }: Ti
             >
               <p className="font-medium text-primary text-sm">{task.title}</p>
               <div className="flex items-center gap-2 mt-1">
-                {task.estimatedMinutes && (
+                {/* {task.estimatedMinutes && (
                   <span className="text-xs text-secondary flex items-center gap-1">
                     <ClockIcon className="w-3 h-3" />
                     {task.estimatedMinutes}m
                   </span>
-                )}
+                )} */}
                 {task.priority && (
                   <span className={`text-xs px-1.5 py-0.5 rounded ${
-                    task.priority === 'critical' ? 'bg-red-500/10 text-red-500' :
                     task.priority === 'high' ? 'bg-orange-500/10 text-orange-500' :
                     task.priority === 'medium' ? 'bg-yellow-500/10 text-yellow-500' :
                     'bg-green-500/10 text-green-500'
@@ -455,9 +452,9 @@ export default function TimeBlockingView({ date = new Date(), onDateChange }: Ti
                   className="w-full text-left p-3 bg-surface hover:bg-sunglow/10 rounded-lg transition-colors"
                 >
                   <p className="font-medium text-primary">{task.title}</p>
-                  {task.estimatedMinutes && (
+                  {/* {task.estimatedMinutes && (
                     <p className="text-xs text-secondary">Est: {task.estimatedMinutes} min</p>
-                  )}
+                  )} */}
                 </button>
               ))}
             </div>

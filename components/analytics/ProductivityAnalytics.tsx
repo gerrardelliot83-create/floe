@@ -2,14 +2,11 @@
 
 import { useState, useMemo } from 'react';
 import {
-  ChartBarIcon,
   TrophyIcon,
   ClockIcon,
   BoltIcon,
-  CalendarIcon,
   SparklesIcon,
   ArrowTrendingUpIcon,
-  ArrowTrendingDownIcon,
   FireIcon
 } from '@heroicons/react/24/outline';
 import useStore from '@/lib/store';
@@ -22,16 +19,14 @@ import {
   eachDayOfInterval,
   isWithinInterval,
   differenceInMinutes,
-  subDays,
-  addDays
+  subDays
 } from 'date-fns';
 
 type TimeRange = 'week' | 'month' | 'quarter' | 'year';
 
 export default function ProductivityAnalytics() {
-  const { tasks, sessions, calendar } = useStore();
+  const { tasks, sessions } = useStore();
   const [timeRange, setTimeRange] = useState<TimeRange>('week');
-  const [selectedMetric, setSelectedMetric] = useState<'tasks' | 'focus' | 'productivity'>('productivity');
 
   // Calculate date ranges
   const now = new Date();
@@ -64,7 +59,6 @@ export default function ProductivityAnalytics() {
     );
 
     const byPriority = {
-      critical: completedTasks.filter(t => t.priority === 'critical').length,
       high: completedTasks.filter(t => t.priority === 'high').length,
       medium: completedTasks.filter(t => t.priority === 'medium').length,
       low: completedTasks.filter(t => t.priority === 'low').length,
@@ -88,7 +82,7 @@ export default function ProductivityAnalytics() {
       overdue: overdueCount,
       averageCompletionTime: calculateAverageCompletionTime(completedTasks),
     };
-  }, [tasks, start, end]);
+  }, [tasks, start, end, now]);
 
   // Session Analytics
   const sessionAnalytics = useMemo(() => {
@@ -120,7 +114,7 @@ export default function ProductivityAnalytics() {
       averageDuration,
       byType,
       averageFocusScore,
-      currentStreak: sessions.streak || 0,
+      currentStreak: 0, // Streak calculation would go here
     };
   }, [sessions, start, end]);
 
@@ -159,13 +153,14 @@ export default function ProductivityAnalytics() {
   }, [tasks, sessions, start, end]);
 
   // Helper functions
-  function calculateAverageCompletionTime(tasks: any[]) {
+  function calculateAverageCompletionTime(tasks: { created_at?: string; updated_at?: string }[]) {
     if (tasks.length === 0) return 0;
     
     const tasksWithTime = tasks.filter(t => t.created_at && t.updated_at);
     if (tasksWithTime.length === 0) return 0;
     
     const totalMinutes = tasksWithTime.reduce((sum, task) => {
+      if (!task.created_at || !task.updated_at) return sum;
       const created = new Date(task.created_at);
       const completed = new Date(task.updated_at);
       return sum + differenceInMinutes(completed, created);

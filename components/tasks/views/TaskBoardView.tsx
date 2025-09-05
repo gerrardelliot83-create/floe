@@ -13,7 +13,7 @@ interface TaskBoardViewProps {
 }
 
 export default function TaskBoardView({ tasks, onTaskSelect }: TaskBoardViewProps) {
-  const [columns, setColumns] = useState<BoardColumn[]>([
+  const [columns] = useState<BoardColumn[]>([
     {
       id: 'backlog',
       title: 'Backlog',
@@ -49,7 +49,7 @@ export default function TaskBoardView({ tasks, onTaskSelect }: TaskBoardViewProp
 
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  const handleDragStart = (event: any) => {
+  const handleDragStart = (event: { active: { id: string } }) => {
     setActiveId(event.active.id);
   };
 
