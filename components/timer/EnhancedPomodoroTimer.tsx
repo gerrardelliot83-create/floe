@@ -4,6 +4,7 @@ import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useStreaks } from '@/lib/hooks/useStreaks';
 import { Task } from '@/lib/types/database';
+import { CheckIcon, FireIcon, SparklesIcon } from '@heroicons/react/24/outline';
 
 interface TimerSession {
   type: '45/15' | '25/5' | 'custom';
@@ -113,7 +114,7 @@ export default function EnhancedPomodoroTimer() {
         setSecondsLeft(selectedSession.focusMinutes * 60);
         
         // Show completion modal
-        alert('🎉 All sessions complete! Great work!');
+        alert('All sessions complete! Great work!');
       } else {
         // Start next focus session
         setIsBreak(false);
@@ -218,7 +219,7 @@ export default function EnhancedPomodoroTimer() {
               Session {currentSessionNum} of {selectedSession.totalSessions}
             </p>
             {selectedSession.linkedTask && (
-              <p className="text-xs text-primary mt-1">
+              <p className="text-xs text-sunglow mt-1">
                 {selectedSession.linkedTask.title}
               </p>
             )}
@@ -234,7 +235,7 @@ export default function EnhancedPomodoroTimer() {
                 className="absolute inset-0 flex-center"
                 style={{ pointerEvents: 'none' }}
               >
-                <div className="text-6xl">✨</div>
+                <SparklesIcon className="w-16 h-16" />
               </motion.div>
             )}
           </AnimatePresence>
@@ -249,11 +250,11 @@ export default function EnhancedPomodoroTimer() {
           </button>
         ) : (
           <>
-            <button onClick={pauseTimer} className="glass-button">
+            <button onClick={pauseTimer} className="btn btn-ghost">
               {isPaused ? 'Resume' : 'Pause'}
             </button>
             {isBreak && (
-              <button onClick={skipBreak} className="glass-button">
+              <button onClick={skipBreak} className="btn btn-ghost">
                 Skip Break
               </button>
             )}
@@ -266,19 +267,22 @@ export default function EnhancedPomodoroTimer() {
 
       {/* Streak & Stats */}
       <div className="grid gap-4 mb-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))' }}>
-        <div className="glass p-3 text-center">
-          <div className="text-2xl mb-1">{streak.current_streak}🔥</div>
+        <div className="card p-3 text-center">
+          <div className="text-2xl mb-1 flex items-center justify-center gap-2">
+            {streak.current_streak}
+            <FireIcon className="w-6 h-6 text-orange-500" />
+          </div>
           <p className="text-xs text-secondary">Current Streak</p>
         </div>
-        <div className="glass p-3 text-center">
+        <div className="card p-3 text-center">
           <div className="text-2xl mb-1">{level.title}</div>
           <p className="text-xs text-secondary">Level {level.level}</p>
         </div>
-        <div className="glass p-3 text-center">
+        <div className="card p-3 text-center">
           <div className="text-2xl mb-1">{streak.total_sessions}</div>
           <p className="text-xs text-secondary">Total Sessions</p>
         </div>
-        <div className="glass p-3 text-center">
+        <div className="card p-3 text-center">
           <div className="text-2xl mb-1">{Math.floor(streak.total_focus_minutes / 60)}h</div>
           <p className="text-xs text-secondary">Total Focus</p>
         </div>
@@ -286,7 +290,7 @@ export default function EnhancedPomodoroTimer() {
 
       {/* Session Configuration */}
       {!isActive && (
-        <div className="glass-card">
+        <div className="card">
           <h3 className="mb-4">Session Configuration</h3>
           
           {/* Session Type Selection */}
@@ -298,9 +302,9 @@ export default function EnhancedPomodoroTimer() {
                   ...session,
                   linkedTask: selectedSession.linkedTask
                 })}
-                className={`glass p-4 text-left transition-all ${
+                className={`card p-4 text-left transition-all ${
                   selectedSession.type === session.type 
-                    ? 'border-primary bg-primary/10' 
+                    ? 'border-sunglow bg-surface' 
                     : ''
                 }`}
               >
@@ -312,7 +316,7 @@ export default function EnhancedPomodoroTimer() {
                     </p>
                   </div>
                   {selectedSession.type === session.type && (
-                    <span className="text-primary">✓</span>
+                    <CheckIcon className="w-4 h-4 text-sunglow" />
                   )}
                 </div>
               </button>
@@ -320,7 +324,7 @@ export default function EnhancedPomodoroTimer() {
           </div>
 
           {selectedSession.type === 'custom' && (
-            <div className="p-4 glass mb-4">
+            <div className="p-4 card mb-4">
               <h4 className="mb-3">Custom Settings</h4>
               <div className="flex gap-4 mobile-flex-col">
                 <div className="flex-1">
@@ -338,7 +342,7 @@ export default function EnhancedPomodoroTimer() {
                         focusMinutes: value,
                       });
                     }}
-                    className="glass-input w-full mt-1"
+                    className="input w-full mt-1"
                   />
                 </div>
                 <div className="flex-1">
@@ -356,7 +360,7 @@ export default function EnhancedPomodoroTimer() {
                         breakMinutes: value,
                       });
                     }}
-                    className="glass-input w-full mt-1"
+                    className="input w-full mt-1"
                   />
                 </div>
               </div>
@@ -368,7 +372,7 @@ export default function EnhancedPomodoroTimer() {
             <label className="text-sm text-secondary">Session Notes (optional)</label>
             <textarea
               placeholder="What will you focus on during this session?"
-              className="glass-input w-full mt-1"
+              className="input w-full mt-1"
               rows={3}
               value={sessionNotes}
               onChange={(e) => setSessionNotes(e.target.value)}

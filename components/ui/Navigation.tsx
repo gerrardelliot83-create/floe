@@ -16,16 +16,16 @@ export default function Navigation() {
   };
 
   const navItems = [
-    { href: '/dashboard', label: 'Dashboard', icon: '🏠' },
-    { href: '/timer', label: 'Timer', icon: '⏱️' },
-    { href: '/tasks', label: 'Tasks', icon: '✓' },
-    { href: '/calendar', label: 'Calendar', icon: '📅' },
+    { href: '/dashboard', label: 'Dashboard' },
+    { href: '/timer', label: 'Timer' },
+    { href: '/tasks', label: 'Tasks' },
+    { href: '/calendar', label: 'Calendar' },
   ];
 
   return (
-    <nav className="glass-card flex-between p-4 mb-6">
+    <nav className="card flex-between p-4 mb-6">
       <div className="flex gap-2">
-        <h3 className="text-primary">Floe</h3>
+        <h3 className="text-sunglow font-bold">Floe</h3>
       </div>
       
       <div className="flex gap-6 mobile-hidden">
@@ -33,11 +33,10 @@ export default function Navigation() {
           <Link
             key={item.href}
             href={item.href}
-            className={`flex gap-2 items-center transition-all ${
-              pathname === item.href ? 'text-primary' : 'text-secondary hover:text-primary'
+            className={`flex gap-2 items-center transition-all font-medium ${
+              pathname === item.href ? 'text-sunglow' : 'text-secondary hover:text-sunglow'
             }`}
           >
-            <span>{item.icon}</span>
             <span>{item.label}</span>
           </Link>
         ))}
@@ -45,7 +44,7 @@ export default function Navigation() {
 
       <button
         onClick={handleLogout}
-        className="glass-button text-sm"
+        className="btn btn-ghost text-sm"
       >
         Logout
       </button>

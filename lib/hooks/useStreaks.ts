@@ -106,32 +106,32 @@ export function useStreaks(userId: string = 'current-user') {
     const achievements: { id: string; title: string; icon: string; unlocked: boolean }[] = [];
     
     if (streak.total_sessions >= 1) {
-      achievements.push({ id: 'first', title: 'First Step', icon: '🎯', unlocked: true });
+      achievements.push({ id: 'first', title: 'First Step', icon: '', unlocked: true });
     }
     
     if (streak.current_streak >= 7) {
-      achievements.push({ id: 'week', title: 'Week Warrior', icon: '🔥', unlocked: true });
+      achievements.push({ id: 'week', title: 'Week Warrior', icon: '', unlocked: true });
     }
     
     if (streak.current_streak >= 30) {
-      achievements.push({ id: 'month', title: 'Monthly Master', icon: '🏆', unlocked: true });
+      achievements.push({ id: 'month', title: 'Monthly Master', icon: '', unlocked: true });
     }
     
     if (streak.total_focus_minutes >= 1500) {
-      achievements.push({ id: '25hours', title: '25 Hour Club', icon: '⏰', unlocked: true });
+      achievements.push({ id: '25hours', title: '25 Hour Club', icon: '', unlocked: true });
     }
     
     if (streak.longest_streak >= 100) {
-      achievements.push({ id: 'century', title: 'Century', icon: '💯', unlocked: true });
+      achievements.push({ id: 'century', title: 'Century', icon: '', unlocked: true });
     }
 
     // Add locked achievements to show progress
     const allPossible = [
-      { id: 'first', title: 'First Step', icon: '🎯', requirement: '1 session' },
-      { id: 'week', title: 'Week Warrior', icon: '🔥', requirement: '7 day streak' },
-      { id: 'month', title: 'Monthly Master', icon: '🏆', requirement: '30 day streak' },
-      { id: '25hours', title: '25 Hour Club', icon: '⏰', requirement: '25 hours focus' },
-      { id: 'century', title: 'Century', icon: '💯', requirement: '100 day streak' },
+      { id: 'first', title: 'First Step', icon: '', requirement: '1 session' },
+      { id: 'week', title: 'Week Warrior', icon: '', requirement: '7 day streak' },
+      { id: 'month', title: 'Monthly Master', icon: '', requirement: '30 day streak' },
+      { id: '25hours', title: '25 Hour Club', icon: '', requirement: '25 hours focus' },
+      { id: 'century', title: 'Century', icon: '', requirement: '100 day streak' },
     ];
 
     return allPossible.map(possible => {

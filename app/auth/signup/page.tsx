@@ -67,7 +67,7 @@ export default function SignupPage() {
 
       if (error) throw error;
 
-      setMessage('Welcome aboard! Check your email to get started 🚀');
+      setMessage('Welcome aboard! Check your email to get started');
       
       // Store name temporarily for onboarding
       localStorage.setItem('pendingUserName', name);
@@ -99,10 +99,10 @@ export default function SignupPage() {
             {/* Tabs */}
             <div className="auth-tabs">
               <Link href="/auth/login" className="auth-tab">
-                ✉️ Login
+                Login
               </Link>
               <button className="auth-tab active">
-                🚀 Sign Up
+                Sign Up
               </button>
             </div>
 
@@ -151,7 +151,7 @@ export default function SignupPage() {
                 className="auth-submit-btn"
                 disabled={loading}
               >
-                {loading ? '🚀 Launching...' : 'Start Your Free Journey'}
+                {loading ? 'Launching...' : 'Start Your Free Journey'}
               </button>
 
               {message && (
@@ -190,7 +190,7 @@ export default function SignupPage() {
               </p>
 
               <p className="text-xs text-center text-tertiary mt-4">
-                By signing up, you agree to be awesome and maintain your focus streaks 🔥
+                By signing up, you agree to be awesome and maintain your focus streaks
               </p>
             </form>
           </div>

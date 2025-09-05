@@ -123,75 +123,75 @@ export default function TaskEditor({ data, onChange, placeholder = 'Start writin
         }
 
         .ce-code__textarea {
-          background: var(--glass) !important;
-          color: var(--text-primary) !important;
-          border: 1px solid var(--glass-border) !important;
+          background: var(--color-surface-dark) !important;
+          color: var(--color-text-primary) !important;
+          border: 1px solid var(--color-border-dark) !important;
           border-radius: var(--radius-sm) !important;
         }
 
         .ce-inline-code {
-          background: var(--glass) !important;
-          color: var(--primary) !important;
-          border: 1px solid var(--glass-border) !important;
+          background: var(--color-surface-dark) !important;
+          color: var(--color-sunglow) !important;
+          border: 1px solid var(--color-border-dark) !important;
           padding: 2px 6px !important;
           border-radius: 4px !important;
         }
 
         .cdx-checklist__item-checkbox {
-          border: 2px solid var(--glass-border) !important;
+          border: 2px solid var(--color-border-dark) !important;
           border-radius: 4px !important;
           background: transparent !important;
         }
 
         .cdx-checklist__item--checked .cdx-checklist__item-checkbox {
-          background: var(--primary) !important;
-          border-color: var(--primary) !important;
+          background: var(--color-sunglow) !important;
+          border-color: var(--color-sunglow) !important;
         }
 
         .cdx-checklist__item-text {
-          color: var(--text-primary) !important;
+          color: var(--color-text-primary) !important;
         }
 
         .ce-toolbar__plus,
         .ce-toolbar__settings-btn {
-          color: var(--text-secondary) !important;
-          background: var(--glass) !important;
+          color: var(--color-text-secondary) !important;
+          background: var(--color-surface-dark) !important;
         }
 
         .ce-toolbar__plus:hover,
         .ce-toolbar__settings-btn:hover {
-          background: var(--glass-hover) !important;
+          background: var(--color-bg-dark) !important;
         }
 
         .ce-popover {
-          background: var(--bg-secondary) !important;
-          border: 1px solid var(--glass-border) !important;
+          background: var(--color-surface-dark) !important;
+          border: 1px solid var(--color-border-dark) !important;
           box-shadow: var(--shadow-lg) !important;
         }
 
         .ce-popover__item {
-          color: var(--text-primary) !important;
+          color: var(--color-text-primary) !important;
         }
 
         .ce-popover__item:hover {
-          background: var(--glass-hover) !important;
+          background: var(--color-bg-dark) !important;
         }
 
         .ce-popover__item-icon {
-          color: var(--text-secondary) !important;
+          color: var(--color-text-secondary) !important;
         }
 
         .ce-conversion-toolbar {
-          background: var(--bg-secondary) !important;
-          border: 1px solid var(--glass-border) !important;
+          background: var(--color-surface-dark) !important;
+          border: 1px solid var(--color-border-dark) !important;
         }
 
         .ce-conversion-toolbar__label {
-          color: var(--text-primary) !important;
+          color: var(--color-text-primary) !important;
         }
 
         .ce-conversion-tool:hover {
-          background: var(--glass-hover) !important;
+          background: var(--color-bg-dark) !important;
         }
 
         .editor-readonly .ce-toolbar {

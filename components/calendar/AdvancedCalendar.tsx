@@ -141,16 +141,16 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
           whileTap={{ scale: 0.95 }}
           onClick={() => setSelectedDate(date)}
           className={`relative p-2 rounded-lg transition-all text-center ${
-            isToday ? 'bg-primary text-white' : 
-            isSelected ? 'bg-primary/20 text-primary border border-primary' : 
-            'hover:bg-glass-hover'
+            isToday ? 'bg-sunglow text-white' : 
+            isSelected ? 'bg-sunglow text-white border border-sunglow' : 
+            'hover:bg-surface'
           }`}
         >
           <span className="text-sm font-medium">{day}</span>
           {hasItems && (
             <div className="flex gap-1 justify-center mt-1">
               {dayEvents.length > 0 && (
-                <span className="w-1.5 h-1.5 bg-accent rounded-full"></span>
+                <span className="w-1.5 h-1.5 bg-sunglow rounded-full"></span>
               )}
               {dayTasks.length > 0 && (
                 <span className="w-1.5 h-1.5 bg-warning rounded-full"></span>
@@ -185,20 +185,20 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
     return (
       <div className="grid grid-cols-7 gap-2">
         {weekDays.map((date, index) => (
-          <div key={index} className="glass p-3">
+          <div key={index} className="card p-3">
             <div className="text-center mb-2">
               <p className="text-xs text-secondary">
                 {date.toLocaleDateString('en-US', { weekday: 'short' })}
               </p>
               <p className={`font-bold ${
-                date.toDateString() === new Date().toDateString() ? 'text-primary' : ''
+                date.toDateString() === new Date().toDateString() ? 'text-sunglow' : ''
               }`}>
                 {date.getDate()}
               </p>
             </div>
             <div className="space-y-1">
               {getEventsForDate(date).slice(0, 3).map(event => (
-                <div key={event.id} className="text-xs p-1 glass rounded">
+                <div key={event.id} className="text-xs p-1 card rounded">
                   {event.title}
                 </div>
               ))}
@@ -211,22 +211,22 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
 
   return (
     <div className="grid gap-6" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))' }}>
-      <div className="glass-card">
+      <div className="card">
         <div className="flex-between mb-4">
-          <button onClick={previousMonth} className="glass-button">
+          <button onClick={previousMonth} className="btn btn-ghost">
             ←
           </button>
           <div className="flex gap-2">
             <button 
               onClick={goToToday} 
-              className="glass-button text-sm"
+              className="btn btn-secondary text-sm"
             >
               Today
             </button>
             <select 
               value={viewMode}
               onChange={(e) => setViewMode(e.target.value as 'month' | 'week' | 'day')}
-              className="glass-input"
+              className="input"
             >
               <option value="month">Month</option>
               <option value="week">Week</option>
@@ -234,7 +234,7 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
             </select>
           </div>
           <h3>{monthNames[currentDate.getMonth()]} {currentDate.getFullYear()}</h3>
-          <button onClick={nextMonth} className="glass-button">
+          <button onClick={nextMonth} className="btn btn-ghost">
             →
           </button>
         </div>
@@ -258,7 +258,7 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
         {viewMode === 'week' && renderWeekView()}
 
         {viewMode === 'day' && selectedDate && (
-          <div className="glass p-4">
+          <div className="card p-4">
             <h4 className="mb-4">
               {selectedDate.toLocaleDateString('en-US', { 
                 weekday: 'long', 
@@ -269,7 +269,7 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
             </h4>
             <div className="space-y-3">
               {getEventsForDate(selectedDate).map(event => (
-                <div key={event.id} className="glass p-3">
+                <div key={event.id} className="card p-3">
                   <p className="font-medium">{event.title}</p>
                   <p className="text-sm text-secondary">
                     {new Date(event.start_time).toLocaleTimeString()} - 
@@ -285,7 +285,7 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
         )}
       </div>
 
-      <div className="glass-card">
+      <div className="card">
         <h3 className="mb-4">
           {selectedDate ? 
             `${selectedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}` : 
@@ -315,18 +315,18 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
                   initial={{ opacity: 0, height: 0 }}
                   animate={{ opacity: 1, height: 'auto' }}
                   exit={{ opacity: 0, height: 0 }}
-                  className="glass p-4"
+                  className="card p-4"
                 >
                   <input
                     type="text"
                     placeholder="Session title..."
-                    className="glass-input w-full mb-3"
+                    className="input w-full mb-3"
                     value={newEvent.title}
                     onChange={(e) => setNewEvent({ ...newEvent, title: e.target.value })}
                   />
 
                   <select
-                    className="glass-input w-full mb-3"
+                    className="input w-full mb-3"
                     value={newEvent.event_type}
                     onChange={(e) => setNewEvent({ ...newEvent, event_type: e.target.value as 'deep_work' | 'task_deadline' | 'meeting' })}
                   >
@@ -338,28 +338,28 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
                   <div className="flex gap-3 mb-3 mobile-flex-col">
                     <input
                       type="datetime-local"
-                      className="glass-input flex-1"
+                      className="input flex-1"
                       value={newEvent.start_time}
                       onChange={(e) => setNewEvent({ ...newEvent, start_time: e.target.value })}
                     />
                     <input
                       type="datetime-local"
-                      className="glass-input flex-1"
+                      className="input flex-1"
                       value={newEvent.end_time}
                       onChange={(e) => setNewEvent({ ...newEvent, end_time: e.target.value })}
                     />
                   </div>
 
                   {newEvent.event_type === 'deep_work' && (
-                    <div className="glass p-3 mb-3">
+                    <div className="card p-3 mb-3">
                       <p className="text-sm text-secondary mb-2">Session Configuration</p>
                       <div className="flex gap-2 mb-3">
                         {(['45/15', '25/5', 'custom'] as const).map(type => (
                           <button
                             key={type}
                             onClick={() => updateSessionConfig(type)}
-                            className={`glass-button flex-1 ${
-                              newEvent.session_config.session_type === type ? 'border-primary' : ''
+                            className={`btn btn-secondary flex-1 ${
+                              newEvent.session_config.session_type === type ? 'border-sunglow bg-sunglow text-white' : ''
                             }`}
                           >
                             {type === 'custom' ? 'Custom' : type}
@@ -371,7 +371,7 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
                           <input
                             type="number"
                             placeholder="Focus"
-                            className="glass-input flex-1"
+                            className="input flex-1"
                             value={newEvent.session_config.focus_minutes}
                             onChange={(e) => setNewEvent({
                               ...newEvent,
@@ -384,7 +384,7 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
                           <input
                             type="number"
                             placeholder="Break"
-                            className="glass-input flex-1"
+                            className="input flex-1"
                             value={newEvent.session_config.break_minutes}
                             onChange={(e) => setNewEvent({
                               ...newEvent,
@@ -401,7 +401,7 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
 
                   <textarea
                     placeholder="Description (optional)..."
-                    className="glass-input w-full mb-3"
+                    className="input w-full mb-3"
                     rows={3}
                     value={newEvent.description}
                     onChange={(e) => setNewEvent({ ...newEvent, description: e.target.value })}
@@ -413,7 +413,7 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
                     </button>
                     <button 
                       onClick={() => setShowEventForm(false)}
-                      className="glass-button flex-1"
+                      className="btn btn-ghost flex-1"
                     >
                       Cancel
                     </button>
@@ -428,14 +428,14 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
                 <motion.div 
                   key={event.id}
                   layout
-                  className="glass p-3"
+                  className="card p-3"
                 >
                   <div className="flex-between mb-2">
                     <p className="font-medium">{event.title}</p>
-                    <span className={`text-xs px-2 py-1 rounded glass ${
-                      event.event_type === 'deep_work' ? 'text-primary' :
+                    <span className={`text-xs px-2 py-1 rounded card ${
+                      event.event_type === 'deep_work' ? 'text-sunglow' :
                       event.event_type === 'task_deadline' ? 'text-warning' :
-                      'text-accent'
+                      'text-sunglow'
                     }`}>
                       {event.event_type.replace('_', ' ')}
                     </span>
@@ -456,8 +456,8 @@ export default function AdvancedCalendar({ events = [], tasks = [], onEventCreat
                 <motion.div 
                   key={task.id}
                   layout
-                  className="glass p-3 border-l-2"
-                  style={{ borderLeftColor: 'var(--warning)' }}
+                  className="card p-3 border-l-2"
+                  style={{ borderLeftColor: 'var(--color-warning)' }}
                 >
                   <p className="font-medium">{task.title}</p>
                   <p className="text-sm text-warning">Task Due</p>

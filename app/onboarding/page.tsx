@@ -122,7 +122,7 @@ export default function OnboardingPage() {
                 >
                   <div className="step-badge">Step 1 of {totalSteps}</div>
                   <h1 className="onboarding-title">
-                    👋 Hi{userData.name ? `, ${userData.name.split(' ')[0]}` : ''}! What&apos;s your origin story?
+                    Hi{userData.name ? `, ${userData.name.split(' ')[0]}` : ''}! What&apos;s your origin story?
                   </h1>
                   <p className="onboarding-subtitle">
                     Let&apos;s personalize your Floe experience. Don&apos;t worry, this only takes 2 minutes (we timed it).
@@ -150,15 +150,15 @@ export default function OnboardingPage() {
                         value={userData.country}
                         onChange={(e) => setUserData({ ...userData, country: e.target.value })}
                       >
-                        <option value="USA">🇺🇸 United States</option>
-                        <option value="UK">🇬🇧 United Kingdom</option>
-                        <option value="Canada">🇨🇦 Canada</option>
-                        <option value="Australia">🇦🇺 Australia</option>
-                        <option value="Germany">🇩🇪 Germany</option>
-                        <option value="France">🇫🇷 France</option>
-                        <option value="Japan">🇯🇵 Japan</option>
-                        <option value="India">🇮🇳 India</option>
-                        <option value="Other">🌍 Other</option>
+                        <option value="USA">United States</option>
+                        <option value="UK">United Kingdom</option>
+                        <option value="Canada">Canada</option>
+                        <option value="Australia">Australia</option>
+                        <option value="Germany">Germany</option>
+                        <option value="France">France</option>
+                        <option value="Japan">Japan</option>
+                        <option value="India">India</option>
+                        <option value="Other">Other</option>
                       </select>
                     </div>
 
@@ -195,7 +195,7 @@ export default function OnboardingPage() {
                 >
                   <div className="step-badge">Step 2 of {totalSteps}</div>
                   <h1 className="onboarding-title">
-                    🎯 What brings you to Floe?
+                    What brings you to Floe?
                   </h1>
                   <p className="onboarding-subtitle">
                     Help us understand your productivity journey. What&apos;s your main focus area?
@@ -218,17 +218,17 @@ export default function OnboardingPage() {
                         Popular Focus Areas:
                       </div>
                       {[
-                        '💻 Programming & Development',
-                        '✍️ Writing & Content Creation',
-                        '🎨 Design & Creative Work',
-                        '📚 Study & Research',
-                        '💼 Business & Management',
-                        '🎯 Personal Projects'
+                        'Programming & Development',
+                        'Writing & Content Creation',
+                        'Design & Creative Work',
+                        'Study & Research',
+                        'Business & Management',
+                        'Personal Projects'
                       ].map((area) => (
                         <button
                           key={area}
                           className={`choice-card ${userData.primaryFocus === area.slice(2) ? 'selected' : ''}`}
-                          onClick={() => setUserData({ ...userData, primaryFocus: area.slice(2) })}
+                          onClick={() => setUserData({ ...userData, primaryFocus: area })}
                         >
                           <div className="choice-card-title">{area}</div>
                         </button>
@@ -255,7 +255,7 @@ export default function OnboardingPage() {
                 >
                   <div className="step-badge">Step 3 of {totalSteps}</div>
                   <h1 className="onboarding-title">
-                    ⏰ When do you do your best work?
+                    When do you do your best work?
                   </h1>
                   <p className="onboarding-subtitle">
                     We&apos;ll optimize your experience based on your peak productivity hours.
@@ -264,12 +264,12 @@ export default function OnboardingPage() {
                   <div className="onboarding-form">
                     <div className="time-pills">
                       {[
-                        '🌅 Early Bird (5-8 AM)',
-                        '☀️ Morning (8-12 PM)',
-                        '🌤️ Afternoon (12-5 PM)',
-                        '🌆 Evening (5-9 PM)',
-                        '🦉 Night Owl (9 PM-2 AM)',
-                        '🎲 It varies'
+                        'Early Bird (5-8 AM)',
+                        'Morning (8-12 PM)',
+                        'Afternoon (12-5 PM)',
+                        'Evening (5-9 PM)',
+                        'Night Owl (9 PM-2 AM)',
+                        'It varies'
                       ].map((time) => (
                         <button
                           key={time}
@@ -302,7 +302,7 @@ export default function OnboardingPage() {
                 >
                   <div className="step-badge">Step 4 of {totalSteps}</div>
                   <h1 className="onboarding-title">
-                    🚀 Choose your work rhythm
+                    Choose your work rhythm
                   </h1>
                   <p className="onboarding-subtitle">
                     Different tasks need different focus styles. Which one resonates with you?
@@ -314,7 +314,7 @@ export default function OnboardingPage() {
                         className={`choice-card ${userData.workStyle === '25/5' ? 'selected' : ''}`}
                         onClick={() => setUserData({ ...userData, workStyle: '25/5' })}
                       >
-                        <div className="choice-card-title">🍅 Classic Pomodoro</div>
+                        <div className="choice-card-title">Classic Pomodoro</div>
                         <div className="choice-card-description">
                           25 min focus, 5 min break • Perfect for maintaining momentum
                         </div>
@@ -324,7 +324,7 @@ export default function OnboardingPage() {
                         className={`choice-card ${userData.workStyle === '45/15' ? 'selected' : ''}`}
                         onClick={() => setUserData({ ...userData, workStyle: '45/15' })}
                       >
-                        <div className="choice-card-title">🧠 Deep Work</div>
+                        <div className="choice-card-title">Deep Work</div>
                         <div className="choice-card-description">
                           45 min focus, 15 min break • Ideal for complex tasks
                         </div>
@@ -334,7 +334,7 @@ export default function OnboardingPage() {
                         className={`choice-card ${userData.workStyle === 'custom' ? 'selected' : ''}`}
                         onClick={() => setUserData({ ...userData, workStyle: 'custom' })}
                       >
-                        <div className="choice-card-title">⚙️ Flexible</div>
+                        <div className="choice-card-title">Flexible</div>
                         <div className="choice-card-description">
                           Customize per session • Adapt to your daily needs
                         </div>
@@ -374,7 +374,7 @@ export default function OnboardingPage() {
                 >
                   <div className="step-badge">Last step!</div>
                   <h1 className="onboarding-title">
-                    ✨ Let&apos;s start with your first win
+                    Let&apos;s start with your first win
                   </h1>
                   <p className="onboarding-subtitle">
                     What&apos;s one thing you want to accomplish today? We&apos;ll help you crush it!
@@ -394,7 +394,7 @@ export default function OnboardingPage() {
 
                     <div style={{ background: '#f0f9ff', padding: '1rem', borderRadius: '0.5rem', marginTop: '1rem' }}>
                       <p className="text-sm" style={{ color: '#0369a1' }}>
-                        💡 <strong>Pro tip:</strong> Start with something you can complete in 1-2 focus sessions. 
+                        <strong>Pro tip:</strong> Start with something you can complete in 1-2 focus sessions. 
                         Small wins build unstoppable momentum!
                       </p>
                     </div>
@@ -405,7 +405,7 @@ export default function OnboardingPage() {
                         className="onboarding-continue-btn"
                         style={{ flex: 1 }}
                       >
-                        {userData.firstTask ? '🎯 Start Focusing!' : 'Skip & Explore'}
+                        {userData.firstTask ? 'Start Focusing!' : 'Skip & Explore'}
                       </button>
                     </div>
                   </div>
@@ -418,7 +418,7 @@ export default function OnboardingPage() {
           <div className="onboarding-right">
             <div className="community-showcase">
               <div className="showcase-header">
-                <span>🌍</span>
+                <span></span>
                 <h3 className="showcase-title">Join 69,273+ members</h3>
               </div>
               

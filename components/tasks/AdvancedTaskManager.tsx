@@ -5,6 +5,7 @@ import { Task } from '@/lib/types/database';
 import TaskEditor from './TaskEditor';
 import { OutputData } from '@editorjs/editorjs';
 import { motion, AnimatePresence } from 'framer-motion';
+import { CheckIcon, ClockIcon, CalendarIcon, ArrowPathIcon } from '@heroicons/react/24/outline';
 
 interface AdvancedTaskManagerProps {
   initialTasks?: Task[];
@@ -100,12 +101,12 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
 
   return (
     <div className="grid gap-6" style={{ gridTemplateColumns: '1fr 2fr' }}>
-      <div className="glass-card" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
+      <div className="card" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
         <div className="flex-between mb-4">
           <h3>Tasks</h3>
           <button 
             onClick={() => setShowTaskForm(!showTaskForm)}
-            className="btn-primary"
+            className="btn btn-primary"
             style={{ padding: '0.5rem 1rem' }}
           >
             + New
@@ -118,19 +119,19 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="glass p-4 mb-4"
+              className="card mb-4"
             >
               <input
                 type="text"
                 placeholder="Task title..."
-                className="glass-input w-full mb-3"
+                className="input w-full mb-3"
                 value={newTaskData.title}
                 onChange={(e) => setNewTaskData({ ...newTaskData, title: e.target.value })}
               />
               
               <div className="flex gap-3 mb-3 mobile-flex-col">
                 <select
-                  className="glass-input flex-1"
+                  className="input flex-1"
                   value={newTaskData.priority}
                   onChange={(e) => setNewTaskData({ ...newTaskData, priority: e.target.value as 'low' | 'medium' | 'high' })}
                 >
@@ -141,7 +142,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
                 
                 <input
                   type="datetime-local"
-                  className="glass-input flex-1"
+                  className="input flex-1"
                   value={newTaskData.due_date}
                   onChange={(e) => setNewTaskData({ ...newTaskData, due_date: e.target.value })}
                 />
@@ -152,7 +153,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
                   {newTaskData.tags.map(tag => (
                     <span 
                       key={tag} 
-                      className="glass px-2 py-1 text-sm flex gap-1 items-center"
+                      className="card px-2 py-1 text-sm flex gap-1 items-center"
                       style={{ borderRadius: 'var(--radius-sm)' }}
                     >
                       {tag}
@@ -168,7 +169,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
                 <input
                   type="text"
                   placeholder="Add tags (press Enter)..."
-                  className="glass-input w-full"
+                  className="input w-full"
                   onKeyDown={(e) => {
                     if (e.key === 'Enter') {
                       e.preventDefault();
@@ -185,12 +186,12 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
               />
 
               <div className="flex gap-3 mt-3">
-                <button onClick={createTask} className="btn-primary flex-1">
+                <button onClick={createTask} className="btn btn-primary flex-1">
                   Create Task
                 </button>
                 <button 
                   onClick={() => setShowTaskForm(false)} 
-                  className="glass-button flex-1"
+                  className="btn btn-secondary flex-1"
                 >
                   Cancel
                 </button>
@@ -203,14 +204,14 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
           <input
             type="text"
             placeholder="Search tasks..."
-            className="glass-input w-full mb-3"
+            className="input w-full mb-3"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
           
           <div className="flex gap-2 mobile-flex-col">
             <select 
-              className="glass-input flex-1"
+              className="input flex-1"
               value={filterPriority}
               onChange={(e) => setFilterPriority(e.target.value as 'all' | 'low' | 'medium' | 'high')}
             >
@@ -221,7 +222,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
             </select>
             
             <select 
-              className="glass-input flex-1"
+              className="input flex-1"
               value={filterStatus}
               onChange={(e) => setFilterStatus(e.target.value as 'all' | 'active' | 'completed')}
             >
@@ -242,7 +243,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: 20 }}
                 onClick={() => setSelectedTask(task)}
-                className={`glass p-3 cursor-pointer transition-all ${
+                className={`card p-3 cursor-pointer transition-all ${
                   selectedTask?.id === task.id ? 'border-primary bg-primary/10' : ''
                 } ${task.completed ? 'opacity-60' : ''}`}
                 style={{ borderLeft: `3px solid ${getPriorityColor(task.priority)}` }}
@@ -257,10 +258,10 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
                       className={`w-5 h-5 mt-1 rounded border-2 flex-center transition-all ${
                         task.completed 
                           ? 'bg-primary border-primary' 
-                          : 'border-glass-border hover:border-primary'
+                          : 'border-gray-600 hover:border-primary'
                       }`}
                     >
-                      {task.completed && <span className="text-white text-xs">✓</span>}
+                      {task.completed && <CheckIcon className="w-3 h-3 text-white" />}
                     </button>
                     <div className="flex-1">
                       <p className={`font-medium ${task.completed ? 'line-through' : ''}`}>
@@ -276,7 +277,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
                           {task.tags.map(tag => (
                             <span 
                               key={tag}
-                              className="text-xs px-2 py-0.5 glass"
+                              className="text-xs px-2 py-0.5 card"
                               style={{ borderRadius: 'var(--radius-sm)' }}
                             >
                               {tag}
@@ -293,7 +294,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
         </div>
       </div>
 
-      <div className="glass-card">
+      <div className="card">
         {selectedTask ? (
           <>
             <div className="flex-between mb-4">
@@ -301,13 +302,13 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
               <div className="flex gap-2">
                 <button
                   onClick={() => deleteTask(selectedTask.id)}
-                  className="glass-button text-error"
+                  className="btn btn-ghost text-error"
                 >
                   Delete
                 </button>
                 <button
                   onClick={() => setSelectedTask(null)}
-                  className="glass-button"
+                  className="btn btn-ghost"
                 >
                   Close
                 </button>
@@ -342,7 +343,7 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
                   {selectedTask.tags.map(tag => (
                     <span 
                       key={tag}
-                      className="px-3 py-1 glass"
+                      className="px-3 py-1 card"
                       style={{ borderRadius: 'var(--radius-sm)' }}
                     >
                       {tag}
@@ -361,17 +362,20 @@ export default function AdvancedTaskManager({ initialTasks = [] }: AdvancedTaskM
               )}
             </div>
 
-            <div className="glass p-4">
+            <div className="card">
               <h4 className="mb-3">Quick Actions</h4>
               <div className="flex gap-3 flex-wrap">
-                <button className="glass-button">
-                  ⏱️ Start Timer
+                <button className="btn btn-ghost flex items-center gap-2">
+                  <ClockIcon className="w-4 h-4" />
+                  Start Timer
                 </button>
-                <button className="glass-button">
-                  📅 Schedule
+                <button className="btn btn-ghost flex items-center gap-2">
+                  <CalendarIcon className="w-4 h-4" />
+                  Schedule
                 </button>
-                <button className="glass-button">
-                  🔄 Convert to Project
+                <button className="btn btn-ghost flex items-center gap-2">
+                  <ArrowPathIcon className="w-4 h-4" />
+                  Convert to Project
                 </button>
               </div>
             </div>

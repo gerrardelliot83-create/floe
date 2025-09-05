@@ -63,7 +63,7 @@ export default function LoginPage() {
 
       if (error) throw error;
 
-      setMessage('Magic link sent! Check your inbox 🪄');
+      setMessage('Magic link sent! Check your inbox');
       setTimeout(() => {
         router.push('/auth/magic-link');
       }, 2000);
@@ -91,10 +91,10 @@ export default function LoginPage() {
             {/* Tabs */}
             <div className="auth-tabs">
               <button className="auth-tab active">
-                ✉️ Login
+                Login
               </button>
               <Link href="/auth/signup" className="auth-tab">
-                🚀 Sign Up
+                Sign Up
               </Link>
             </div>
 
@@ -127,7 +127,7 @@ export default function LoginPage() {
                 className="auth-submit-btn"
                 disabled={loading}
               >
-                {loading ? '✨ Sending magic...' : 'Log In with Magic Link'}
+                {loading ? 'Sending magic...' : 'Log In with Magic Link'}
               </button>
 
               {message && (

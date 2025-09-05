@@ -2,7 +2,7 @@
 
 .onboarding-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #e0f2fe 0%, #ddd6fe 100%);
+  background: var(--color-bg-dark);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,9 +10,10 @@
 }
 
 .onboarding-card {
-  background: white;
-  border-radius: 1.5rem;
-  box-shadow: 0 20px 60px -12px rgba(0, 0, 0, 0.15);
+  background: var(--color-surface-dark);
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
   max-width: 900px;
   width: 100%;
   padding: 3rem;
@@ -32,19 +33,19 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid #e2e8f0;
-  background: white;
+  border: 1px solid var(--color-border-dark);
+  background: var(--color-bg-dark);
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s;
-  color: #64748b;
+  transition: all var(--transition-base);
+  color: var(--color-text-secondary);
 }
 
 .onboarding-back-btn:hover {
-  background: #f8fafc;
-  border-color: #cbd5e1;
+  background: var(--color-surface-dark);
+  border-color: var(--color-sunglow);
 }
 
 .onboarding-progress {
@@ -56,17 +57,17 @@
 .progress-step {
   height: 4px;
   flex: 1;
-  background: #e2e8f0;
+  background: var(--color-border-dark);
   border-radius: 2px;
-  transition: all 0.3s;
+  transition: all var(--transition-slow);
 }
 
 .progress-step.active {
-  background: var(--primary);
+  background: var(--color-sunglow);
 }
 
 .progress-step.completed {
-  background: var(--primary);
+  background: var(--color-sunglow);
 }
 
 /* Main Content Area */
@@ -88,7 +89,7 @@
 /* Step Badge */
 .step-badge {
   font-size: 0.875rem;
-  color: #94a3b8;
+  color: var(--color-text-secondary);
   margin-bottom: 1rem;
 }
 
@@ -96,22 +97,19 @@
 .onboarding-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--color-text-primary);
   margin-bottom: 0.75rem;
   font-family: var(--font-heading);
   line-height: 1.2;
 }
 
 .onboarding-greeting {
-  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--color-sunglow);
 }
 
 .onboarding-subtitle {
   font-size: 1.125rem;
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin-bottom: 2.5rem;
   line-height: 1.6;
 }
@@ -132,38 +130,40 @@
 .onboarding-label {
   font-size: 0.9375rem;
   font-weight: 500;
-  color: #475569;
+  color: var(--color-text-secondary);
 }
 
 .onboarding-input {
   padding: 0.875rem 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-md);
   font-size: 1rem;
-  transition: all 0.2s;
-  background: white;
+  transition: all var(--transition-base);
+  background: var(--color-bg-dark);
+  color: var(--color-text-primary);
 }
 
 .onboarding-input:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+  border-color: var(--color-sunglow);
+  box-shadow: 0 0 0 3px rgba(229, 120, 115, 0.1);
 }
 
 .onboarding-select {
   padding: 0.875rem 1rem;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-md);
   font-size: 1rem;
-  background: white;
+  background: var(--color-bg-dark);
+  color: var(--color-text-primary);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
 }
 
 .onboarding-select:focus {
   outline: none;
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.1);
+  border-color: var(--color-sunglow);
+  box-shadow: 0 0 0 3px rgba(229, 120, 115, 0.1);
 }
 
 /* Choice Cards */
@@ -174,34 +174,34 @@
 
 .choice-card {
   padding: 1.25rem;
-  border: 2px solid #e2e8f0;
-  border-radius: 0.75rem;
-  background: white;
+  border: 2px solid var(--color-border-dark);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-dark);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
   text-align: left;
 }
 
 .choice-card:hover {
-  border-color: #cbd5e1;
-  background: #f8fafc;
+  border-color: var(--color-sunglow);
+  background: var(--color-surface-dark);
 }
 
 .choice-card.selected {
-  border-color: var(--primary);
-  background: rgba(0, 212, 255, 0.05);
+  border-color: var(--color-sunglow);
+  background: var(--color-surface-dark);
 }
 
 .choice-card-title {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--color-text-primary);
   margin-bottom: 0.25rem;
 }
 
 .choice-card-description {
   font-size: 0.875rem;
-  color: #64748b;
+  color: var(--color-text-secondary);
 }
 
 /* Time Pills */
@@ -213,37 +213,37 @@
 
 .time-pill {
   padding: 0.625rem 1.25rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-border-dark);
   border-radius: 2rem;
-  background: white;
+  background: var(--color-bg-dark);
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
   font-size: 0.9375rem;
-  color: #64748b;
+  color: var(--color-text-secondary);
 }
 
 .time-pill:hover {
-  border-color: #cbd5e1;
-  background: #f8fafc;
+  border-color: var(--color-sunglow);
+  background: var(--color-surface-dark);
 }
 
 .time-pill.selected {
-  border-color: var(--primary);
-  background: var(--primary);
+  border-color: var(--color-sunglow);
+  background: var(--color-sunglow);
   color: white;
 }
 
 /* Continue Button */
 .onboarding-continue-btn {
   padding: 0.875rem 2rem;
-  background: var(--primary);
+  background: var(--color-sunglow);
   color: white;
   border: none;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
   margin-top: 1.5rem;
   display: inline-flex;
   align-items: center;
@@ -251,8 +251,9 @@
 }
 
 .onboarding-continue-btn:hover {
-  background: #00a8cc;
+  background: #D06863;
   transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .onboarding-continue-btn:disabled {
@@ -264,23 +265,25 @@
 .onboarding-skip-btn {
   padding: 0.875rem 2rem;
   background: transparent;
-  color: #64748b;
-  border: 1px solid #e2e8f0;
-  border-radius: 0.5rem;
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-md);
   font-size: 1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all var(--transition-base);
 }
 
 .onboarding-skip-btn:hover {
-  background: #f8fafc;
+  background: var(--color-surface-dark);
+  color: var(--color-text-primary);
 }
 
 /* Right Side - Community Showcase */
 .community-showcase {
-  background: #f8fafc;
-  border-radius: 1rem;
+  background: var(--color-bg-dark);
+  border: 1px solid var(--color-border-dark);
+  border-radius: var(--radius-lg);
   padding: 1.5rem;
   position: sticky;
   top: 2rem;
@@ -296,7 +299,7 @@
 .showcase-title {
   font-size: 0.875rem;
   font-weight: 600;
-  color: #475569;
+  color: var(--color-text-secondary);
 }
 
 .showcase-members {
@@ -309,9 +312,9 @@
 .member-avatar {
   width: 48px;
   height: 48px;
-  border-radius: 0.5rem;
+  border-radius: var(--radius-md);
   object-fit: cover;
-  border: 3px solid white;
+  border: 3px solid var(--color-surface-dark);
   margin-right: -8px;
 }
 
@@ -321,7 +324,7 @@
 
 .showcase-stats {
   padding-top: 1rem;
-  border-top: 1px solid #e2e8f0;
+  border-top: 1px solid var(--color-border-dark);
 }
 
 .stat-item {
@@ -333,13 +336,13 @@
 
 .stat-label {
   font-size: 0.875rem;
-  color: #64748b;
+  color: var(--color-text-secondary);
 }
 
 .stat-value {
   font-size: 1.125rem;
   font-weight: 600;
-  color: #1e293b;
+  color: var(--color-text-primary);
 }
 
 /* Celebration Screen */
@@ -362,14 +365,14 @@
 .celebration-title {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #1e293b;
+  color: var(--color-text-primary);
   margin-bottom: 1rem;
   font-family: var(--font-heading);
 }
 
 .celebration-message {
   font-size: 1.25rem;
-  color: #64748b;
+  color: var(--color-text-secondary);
   margin-bottom: 2rem;
   line-height: 1.6;
 }

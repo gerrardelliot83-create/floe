@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
+import { CheckIcon } from '@heroicons/react/24/outline';
 
 interface TimerSession {
   type: '45/15' | '25/5' | 'custom';
@@ -153,7 +154,7 @@ export default function PomodoroTimer() {
           </button>
         ) : (
           <>
-            <button onClick={pauseTimer} className="glass-button">
+            <button onClick={pauseTimer} className="btn btn-ghost">
               {isPaused ? 'Resume' : 'Pause'}
             </button>
             <button onClick={resetTimer} className="btn-secondary">
@@ -164,16 +165,16 @@ export default function PomodoroTimer() {
       </div>
 
       {!isActive && (
-        <div className="glass-card">
+        <div className="card">
           <h3 className="mb-4">Session Type</h3>
           <div className="flex-col gap-3">
             {sessions.map((session) => (
               <button
                 key={session.type}
                 onClick={() => setSelectedSession(session)}
-                className={`glass p-4 text-left transition-all ${
+                className={`card p-4 text-left transition-all ${
                   selectedSession.type === session.type 
-                    ? 'border-primary bg-primary/10' 
+                    ? 'border-sunglow bg-surface' 
                     : ''
                 }`}
               >
@@ -187,7 +188,7 @@ export default function PomodoroTimer() {
                     </p>
                   </div>
                   {selectedSession.type === session.type && (
-                    <span className="text-primary">✓</span>
+                    <CheckIcon className="w-4 h-4 text-sunglow" />
                   )}
                 </div>
               </button>
@@ -195,7 +196,7 @@ export default function PomodoroTimer() {
           </div>
 
           {selectedSession.type === 'custom' && (
-            <div className="mt-4 p-4 glass">
+            <div className="mt-4 p-4 card">
               <h4 className="mb-3">Custom Settings</h4>
               <div className="flex gap-4 mobile-flex-col">
                 <div className="flex-1">
@@ -213,7 +214,7 @@ export default function PomodoroTimer() {
                         focusMinutes: value,
                       });
                     }}
-                    className="glass-input w-full mt-1"
+                    className="input w-full mt-1"
                   />
                 </div>
                 <div className="flex-1">
@@ -231,7 +232,7 @@ export default function PomodoroTimer() {
                         breakMinutes: value,
                       });
                     }}
-                    className="glass-input w-full mt-1"
+                    className="input w-full mt-1"
                   />
                 </div>
               </div>
