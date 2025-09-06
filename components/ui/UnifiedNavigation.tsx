@@ -15,12 +15,20 @@ import {
   PlusIcon,
   ArrowRightStartOnRectangleIcon,
   CommandLineIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+  Bars3Icon,
+  XMarkIcon,
+  BoltIcon,
+  FireIcon,
 } from '@heroicons/react/24/outline';
+import { useState } from 'react';
 
 export default function UnifiedNavigation() {
   const pathname = usePathname();
   const router = useRouter();
   const supabase = createClient();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   const { 
     ui: { sidebarCollapsed },
@@ -30,12 +38,13 @@ export default function UnifiedNavigation() {
     user 
   } = useStore();
 
-  // Global keyboard shortcuts
-  useHotkeys('1', () => router.push('/dashboard'), { enableOnFormTags: false });
-  useHotkeys('2', () => router.push('/tasks'), { enableOnFormTags: false });
-  useHotkeys('3', () => router.push('/timer'), { enableOnFormTags: false });
-  useHotkeys('4', () => router.push('/calendar'), { enableOnFormTags: false });
-  useHotkeys('cmd+t, ctrl+t', (e) => {
+  // Keyboard shortcuts
+  useHotkeys('cmd+k, ctrl+k', (e) => {
+    e.preventDefault();
+    toggleCommandPalette();
+  }, { enableOnFormTags: false });
+  
+  useHotkeys('cmd+n, ctrl+n', (e) => {
     e.preventDefault();
     toggleQuickAdd();
   }, { enableOnFormTags: false });
@@ -49,218 +58,291 @@ export default function UnifiedNavigation() {
     { 
       href: '/dashboard', 
       label: 'Dashboard', 
-      icon: HomeIcon, 
-      shortcut: '1',
-      color: 'text-blue-500'
+      icon: HomeIcon,
+      description: 'Overview and stats'
     },
     { 
       href: '/tasks', 
       label: 'Tasks', 
-      icon: CheckCircleIcon, 
-      shortcut: '2',
-      color: 'text-green-500'
+      icon: CheckCircleIcon,
+      description: 'Manage your tasks'
+    },
+    { 
+      href: '/deep-work', 
+      label: 'Deep Work', 
+      icon: BoltIcon,
+      description: 'Focus sessions'
     },
     { 
       href: '/timer', 
-      label: 'Focus', 
-      icon: ClockIcon, 
-      shortcut: '3',
-      color: 'text-purple-500'
+      label: 'Timer', 
+      icon: ClockIcon,
+      description: 'Pomodoro timer'
     },
     { 
       href: '/calendar', 
       label: 'Calendar', 
-      icon: CalendarDaysIcon, 
-      shortcut: '4',
-      color: 'text-orange-500'
+      icon: CalendarDaysIcon,
+      description: 'Schedule view'
     },
-  ];
-
-  const bottomNavItems = [
     { 
       href: '/analytics', 
       label: 'Analytics', 
       icon: ChartBarIcon,
-      shortcut: '5',
-      color: 'text-cyan-500'
-    },
-    { 
-      href: '/settings', 
-      label: 'Settings', 
-      icon: Cog6ToothIcon,
-      shortcut: ',',
-      color: 'text-gray-500'
+      description: 'Your progress'
     },
   ];
 
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className={`hidden lg:flex flex-col fixed left-0 top-0 h-full bg-surface border-r border-border-dark transition-all duration-300 z-40 ${
-        sidebarCollapsed ? 'w-20' : 'w-64'
-      }`}>
-        {/* Logo */}
-        <div className="h-16 flex items-center justify-between px-6 border-b border-border-dark">
-          <Link href="/dashboard" className={`font-bold text-xl text-sunglow ${sidebarCollapsed ? 'hidden' : ''}`}>
-            Floe
-          </Link>
+      <aside className={`
+        hidden lg:flex flex-col fixed left-0 top-0 h-full 
+        bg-surface border-r border-border z-30 transition-all duration-300
+        ${sidebarCollapsed ? 'w-16' : 'w-64'}
+      `}>
+        {/* Logo Section */}
+        <div className="h-16 flex items-center justify-between px-4 border-b border-border">
+          {!sidebarCollapsed && (
+            <Link href="/dashboard" className="flex items-center gap-2">
+              <div className="w-8 h-8 bg-sunglow rounded-lg flex items-center justify-center">
+                <FireIcon className="w-5 h-5 text-white" />
+              </div>
+              <span className="font-semibold text-lg text-primary">Floe</span>
+            </Link>
+          )}
           <button
             onClick={toggleSidebar}
-            className="text-secondary hover:text-primary transition-colors"
+            className="p-1.5 rounded-lg hover:bg-surface-light transition-colors text-secondary hover:text-primary"
+            aria-label="Toggle sidebar"
           >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={sidebarCollapsed ? "M13 5l7 7-7 7M5 5l7 7-7 7" : "M11 19l-7-7 7-7m8 14l-7-7 7-7"} />
-            </svg>
+            {sidebarCollapsed ? (
+              <ChevronRightIcon className="w-5 h-5" />
+            ) : (
+              <ChevronLeftIcon className="w-5 h-5" />
+            )}
           </button>
         </div>
 
         {/* Main Navigation */}
-        <nav className="flex-1 px-3 py-4">
-          <div className="space-y-1">
-            {navItems.map((item) => {
-              const isActive = pathname === item.href;
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative ${
-                    isActive 
-                      ? 'bg-sunglow/10 text-sunglow border-l-4 border-sunglow' 
-                      : 'hover:bg-surface-dark text-secondary hover:text-primary'
-                  }`}
-                >
-                  <item.icon className={`w-5 h-5 ${isActive ? '' : item.color}`} />
-                  {!sidebarCollapsed && (
-                    <>
-                      <span className="font-medium">{item.label}</span>
-                      <kbd className="ml-auto px-1.5 py-0.5 text-xs bg-bg-dark rounded border border-border-dark text-secondary">
-                        {item.shortcut}
-                      </kbd>
-                    </>
-                  )}
-                  {sidebarCollapsed && (
-                    <div className="absolute left-full ml-2 px-2 py-1 bg-surface-dark rounded-md text-sm text-primary whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity">
-                      {item.label}
-                    </div>
-                  )}
-                </Link>
-              );
-            })}
-          </div>
-
-          {/* Quick Actions */}
-          <div className="mt-8 pt-4 border-t border-border-dark">
-            <button
-              onClick={toggleQuickAdd}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-sunglow text-white hover:bg-sunglow/90 transition-colors"
-            >
-              <PlusIcon className="w-5 h-5" />
-              {!sidebarCollapsed && (
-                <>
-                  <span className="font-medium">New Task</span>
-                  <kbd className="ml-auto px-1.5 py-0.5 text-xs bg-white/20 rounded">
-                    ⌘T
-                  </kbd>
-                </>
-              )}
-            </button>
-            
-            <button
-              onClick={toggleCommandPalette}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-surface-dark text-secondary hover:text-primary transition-colors mt-2"
-            >
-              <CommandLineIcon className="w-5 h-5" />
-              {!sidebarCollapsed && (
-                <>
-                  <span className="font-medium">Commands</span>
-                  <kbd className="ml-auto px-1.5 py-0.5 text-xs bg-bg-dark rounded border border-border-dark">
-                    ⌘K
-                  </kbd>
-                </>
-              )}
-            </button>
-          </div>
-        </nav>
-
-        {/* Bottom Section */}
-        <div className="px-3 pb-4">
-          <div className="space-y-1">
-            {bottomNavItems.map((item) => (
+        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto scrollbar-thin">
+          {navItems.map((item) => {
+            const isActive = pathname === item.href || 
+                           (item.href !== '/dashboard' && pathname.startsWith(item.href));
+            return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all group relative ${
-                  pathname === item.href
-                    ? 'bg-sunglow/10 text-sunglow'
-                    : 'hover:bg-surface-dark text-secondary hover:text-primary'
-                }`}
+                className={`
+                  group flex items-center gap-3 px-3 py-2.5 rounded-lg
+                  transition-all duration-200 relative
+                  ${isActive 
+                    ? 'bg-sunglow/10 text-sunglow' 
+                    : 'text-secondary hover:text-primary hover:bg-surface-light'
+                  }
+                `}
               >
-                <item.icon className={`w-5 h-5 ${pathname === item.href ? '' : item.color}`} />
-                {!sidebarCollapsed && <span className="font-medium">{item.label}</span>}
+                {/* Active indicator */}
+                {isActive && (
+                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-sunglow rounded-r-full" />
+                )}
+                
+                <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-sunglow' : ''}`} />
+                
+                {!sidebarCollapsed && (
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium">{item.label}</p>
+                    {item.description && (
+                      <p className="text-xs text-muted">{item.description}</p>
+                    )}
+                  </div>
+                )}
+                
+                {/* Tooltip for collapsed state */}
                 {sidebarCollapsed && (
-                  <div className="absolute left-full ml-2 px-2 py-1 bg-surface-dark rounded-md text-sm text-primary whitespace-nowrap opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity">
-                    {item.label}
+                  <div className="
+                    absolute left-full ml-2 px-3 py-2 bg-surface-light rounded-lg
+                    text-sm text-primary whitespace-nowrap shadow-lg border border-border
+                    opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity
+                    z-50
+                  ">
+                    <p className="font-medium">{item.label}</p>
+                    <p className="text-xs text-muted">{item.description}</p>
                   </div>
                 )}
               </Link>
-            ))}
-          </div>
+            );
+          })}
+        </nav>
 
-          {/* User Section */}
-          <div className="mt-4 pt-4 border-t border-border-dark">
-            <div className="flex items-center gap-3 px-3 py-2">
-              <div className="w-8 h-8 rounded-full bg-sunglow/20 flex items-center justify-center">
-                <span className="text-sunglow font-medium text-sm">
-                  {user.fullName?.[0]?.toUpperCase() || user.email?.[0]?.toUpperCase() || 'U'}
-                </span>
+        {/* Quick Actions */}
+        <div className="p-3 space-y-2 border-t border-border">
+          <button
+            onClick={toggleQuickAdd}
+            className="w-full btn btn-primary btn-sm justify-start gap-2"
+          >
+            <PlusIcon className="w-4 h-4" />
+            {!sidebarCollapsed && <span>New Task</span>}
+          </button>
+          
+          <button
+            onClick={toggleCommandPalette}
+            className="w-full btn btn-ghost btn-sm justify-start gap-2"
+          >
+            <CommandLineIcon className="w-4 h-4" />
+            {!sidebarCollapsed && <span>Commands</span>}
+          </button>
+        </div>
+
+        {/* User Section */}
+        <div className="p-3 border-t border-border">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 rounded-full bg-sunglow/20 flex items-center justify-center flex-shrink-0">
+              <span className="text-xs font-medium text-sunglow">
+                {user?.fullName?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
+              </span>
+            </div>
+            
+            {!sidebarCollapsed && (
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-primary truncate">
+                  {user?.fullName || 'User'}
+                </p>
+                <p className="text-xs text-muted truncate">
+                  {user?.email}
+                </p>
               </div>
-              {!sidebarCollapsed && (
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-primary truncate">
-                    {user.fullName || 'User'}
-                  </p>
-                  <p className="text-xs text-secondary truncate">
-                    {user.email}
-                  </p>
-                </div>
-              )}
+            )}
+            
+            <button
+              onClick={handleLogout}
+              className="p-1.5 rounded-lg hover:bg-surface-light transition-colors text-secondary hover:text-primary ml-auto"
+              aria-label="Logout"
+            >
+              <ArrowRightStartOnRectangleIcon className="w-4 h-4" />
+            </button>
+          </div>
+          
+          {!sidebarCollapsed && (
+            <Link 
+              href="/settings"
+              className="mt-2 flex items-center gap-2 px-2 py-1.5 text-xs text-secondary hover:text-primary transition-colors"
+            >
+              <Cog6ToothIcon className="w-4 h-4" />
+              Settings
+            </Link>
+          )}
+        </div>
+      </aside>
+
+      {/* Mobile Header */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-surface border-b border-border z-30">
+        <div className="h-full px-4 flex items-center justify-between">
+          <Link href="/dashboard" className="flex items-center gap-2">
+            <div className="w-7 h-7 bg-sunglow rounded-lg flex items-center justify-center">
+              <FireIcon className="w-4 h-4 text-white" />
+            </div>
+            <span className="font-semibold text-primary">Floe</span>
+          </Link>
+          
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="p-2 rounded-lg hover:bg-surface-light transition-colors text-secondary"
+            aria-label="Toggle menu"
+          >
+            {mobileMenuOpen ? (
+              <XMarkIcon className="w-5 h-5" />
+            ) : (
+              <Bars3Icon className="w-5 h-5" />
+            )}
+          </button>
+        </div>
+      </header>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="lg:hidden fixed inset-0 z-40 flex">
+          <div 
+            className="fixed inset-0 bg-black/50" 
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          
+          <div className="relative flex-1 flex flex-col max-w-xs w-full bg-surface">
+            <div className="h-14 flex items-center px-4 border-b border-border">
+              <span className="font-semibold text-lg text-primary">Menu</span>
+            </div>
+            
+            <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+              {navItems.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={`
+                      flex items-center gap-3 px-3 py-3 rounded-lg
+                      transition-all duration-200
+                      ${isActive 
+                        ? 'bg-sunglow/10 text-sunglow' 
+                        : 'text-secondary hover:text-primary hover:bg-surface-light'
+                      }
+                    `}
+                  >
+                    <item.icon className={`w-5 h-5 ${isActive ? 'text-sunglow' : ''}`} />
+                    <div>
+                      <p className="text-sm font-medium">{item.label}</p>
+                      <p className="text-xs text-muted">{item.description}</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </nav>
+            
+            <div className="p-3 space-y-2 border-t border-border">
+              <button
+                onClick={() => {
+                  toggleQuickAdd();
+                  setMobileMenuOpen(false);
+                }}
+                className="w-full btn btn-primary btn-sm"
+              >
+                <PlusIcon className="w-4 h-4" />
+                New Task
+              </button>
+              
               <button
                 onClick={handleLogout}
-                className="ml-auto text-secondary hover:text-primary transition-colors"
-                title="Logout"
+                className="w-full btn btn-ghost btn-sm"
               >
-                <ArrowRightStartOnRectangleIcon className="w-5 h-5" />
+                <ArrowRightStartOnRectangleIcon className="w-4 h-4" />
+                Logout
               </button>
             </div>
           </div>
         </div>
-      </aside>
+      )}
 
       {/* Mobile Bottom Navigation */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-surface border-t border-border-dark z-40">
-        <div className="flex justify-around py-2">
-          {navItems.map((item) => {
+      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface border-t border-border z-30">
+        <div className="h-full px-2 flex items-center justify-around">
+          {navItems.slice(0, 5).map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex flex-col items-center gap-1 px-3 py-2 rounded-lg transition-colors ${
-                  isActive ? 'text-sunglow' : 'text-secondary'
-                }`}
+                className={`
+                  flex flex-col items-center gap-1 px-3 py-2 rounded-lg
+                  transition-colors min-w-0
+                  ${isActive ? 'text-sunglow' : 'text-secondary'}
+                `}
               >
                 <item.icon className="w-5 h-5" />
-                <span className="text-xs">{item.label}</span>
+                <span className="text-2xs">{item.label}</span>
               </Link>
             );
           })}
-          <button
-            onClick={toggleCommandPalette}
-            className="flex flex-col items-center gap-1 px-3 py-2 rounded-lg text-secondary"
-          >
-            <CommandLineIcon className="w-5 h-5" />
-            <span className="text-xs">More</span>
-          </button>
         </div>
       </nav>
     </>
