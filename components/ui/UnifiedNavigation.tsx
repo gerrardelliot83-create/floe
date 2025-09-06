@@ -23,6 +23,7 @@ import {
   FireIcon,
 } from '@heroicons/react/24/outline';
 import { useState } from 'react';
+import styles from './UnifiedNavigation.module.css';
 
 export default function UnifiedNavigation() {
   const pathname = usePathname();
@@ -96,36 +97,32 @@ export default function UnifiedNavigation() {
   return (
     <>
       {/* Desktop Sidebar */}
-      <aside className={`
-        hidden lg:flex flex-col fixed left-0 top-0 h-full 
-        bg-surface border-r border-border z-30 transition-all duration-300
-        ${sidebarCollapsed ? 'w-16' : 'w-64'}
-      `}>
+      <aside className={`${styles.sidebar} ${sidebarCollapsed ? styles.collapsed : ''}`}>
         {/* Logo Section */}
-        <div className="h-16 flex items-center justify-between px-4 border-b border-border">
+        <div className={styles.sidebarHeader}>
           {!sidebarCollapsed && (
-            <Link href="/dashboard" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-sunglow rounded-lg flex items-center justify-center">
-                <FireIcon className="w-5 h-5 text-white" />
+            <Link href="/dashboard" className={styles.logo}>
+              <div className={styles.logoIcon}>
+                <FireIcon />
               </div>
-              <span className="font-semibold text-lg text-primary">Floe</span>
+              <span className={styles.logoText}>Floe</span>
             </Link>
           )}
           <button
             onClick={toggleSidebar}
-            className="p-1.5 rounded-lg hover:bg-surface-light transition-colors text-secondary hover:text-primary"
+            className={styles.toggleButton}
             aria-label="Toggle sidebar"
           >
             {sidebarCollapsed ? (
-              <ChevronRightIcon className="w-5 h-5" />
+              <ChevronRightIcon />
             ) : (
-              <ChevronLeftIcon className="w-5 h-5" />
+              <ChevronLeftIcon />
             )}
           </button>
         </div>
 
         {/* Main Navigation */}
-        <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto scrollbar-thin">
+        <nav className={styles.nav}>
           {navItems.map((item) => {
             const isActive = pathname === item.href || 
                            (item.href !== '/dashboard' && pathname.startsWith(item.href));
@@ -133,41 +130,24 @@ export default function UnifiedNavigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`
-                  group flex items-center gap-3 px-3 py-2.5 rounded-lg
-                  transition-all duration-200 relative
-                  ${isActive 
-                    ? 'bg-sunglow/10 text-sunglow' 
-                    : 'text-secondary hover:text-primary hover:bg-surface-light'
-                  }
-                `}
+                className={`${styles.navItem} ${isActive ? styles.active : ''}`}
               >
-                {/* Active indicator */}
-                {isActive && (
-                  <div className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-sunglow rounded-r-full" />
-                )}
-                
-                <item.icon className={`w-5 h-5 flex-shrink-0 ${isActive ? 'text-sunglow' : ''}`} />
+                <item.icon className={styles.navIcon} />
                 
                 {!sidebarCollapsed && (
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-medium">{item.label}</p>
+                  <div className={styles.navLabel}>
+                    <p className={styles.navLabelText}>{item.label}</p>
                     {item.description && (
-                      <p className="text-xs text-muted">{item.description}</p>
+                      <p className={styles.navLabelDescription}>{item.description}</p>
                     )}
                   </div>
                 )}
                 
                 {/* Tooltip for collapsed state */}
                 {sidebarCollapsed && (
-                  <div className="
-                    absolute left-full ml-2 px-3 py-2 bg-surface-light rounded-lg
-                    text-sm text-primary whitespace-nowrap shadow-lg border border-border
-                    opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity
-                    z-50
-                  ">
-                    <p className="font-medium">{item.label}</p>
-                    <p className="text-xs text-muted">{item.description}</p>
+                  <div className={styles.tooltip}>
+                    <p className={styles.tooltipTitle}>{item.label}</p>
+                    <p className={styles.tooltipDescription}>{item.description}</p>
                   </div>
                 )}
               </Link>
@@ -176,39 +156,37 @@ export default function UnifiedNavigation() {
         </nav>
 
         {/* Quick Actions */}
-        <div className="p-3 space-y-2 border-t border-border">
+        <div className={styles.quickActions}>
           <button
             onClick={toggleQuickAdd}
-            className="w-full btn btn-primary btn-sm justify-start gap-2"
+            className={`${styles.quickActionButton} ${styles.primary}`}
           >
-            <PlusIcon className="w-4 h-4" />
+            <PlusIcon />
             {!sidebarCollapsed && <span>New Task</span>}
           </button>
           
           <button
             onClick={toggleCommandPalette}
-            className="w-full btn btn-ghost btn-sm justify-start gap-2"
+            className={styles.quickActionButton}
           >
-            <CommandLineIcon className="w-4 h-4" />
+            <CommandLineIcon />
             {!sidebarCollapsed && <span>Commands</span>}
           </button>
         </div>
 
         {/* User Section */}
-        <div className="p-3 border-t border-border">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-full bg-sunglow/20 flex items-center justify-center flex-shrink-0">
-              <span className="text-xs font-medium text-sunglow">
-                {user?.fullName?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
-              </span>
+        <div className={styles.userSection}>
+          <div className={styles.userInfo}>
+            <div className={styles.userAvatar}>
+              {user?.fullName?.[0]?.toUpperCase() || user?.email?.[0]?.toUpperCase() || 'U'}
             </div>
             
             {!sidebarCollapsed && (
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-medium text-primary truncate">
+              <div className={styles.userDetails}>
+                <p className={styles.userName}>
                   {user?.fullName || 'User'}
                 </p>
-                <p className="text-xs text-muted truncate">
+                <p className={styles.userEmail}>
                   {user?.email}
                 </p>
               </div>
@@ -216,19 +194,19 @@ export default function UnifiedNavigation() {
             
             <button
               onClick={handleLogout}
-              className="p-1.5 rounded-lg hover:bg-surface-light transition-colors text-secondary hover:text-primary ml-auto"
+              className={styles.logoutButton}
               aria-label="Logout"
             >
-              <ArrowRightStartOnRectangleIcon className="w-4 h-4" />
+              <ArrowRightStartOnRectangleIcon />
             </button>
           </div>
           
           {!sidebarCollapsed && (
             <Link 
               href="/settings"
-              className="mt-2 flex items-center gap-2 px-2 py-1.5 text-xs text-secondary hover:text-primary transition-colors"
+              className={styles.settingsLink}
             >
-              <Cog6ToothIcon className="w-4 h-4" />
+              <Cog6ToothIcon />
               Settings
             </Link>
           )}
@@ -236,43 +214,41 @@ export default function UnifiedNavigation() {
       </aside>
 
       {/* Mobile Header */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 h-14 bg-surface border-b border-border z-30">
-        <div className="h-full px-4 flex items-center justify-between">
-          <Link href="/dashboard" className="flex items-center gap-2">
-            <div className="w-7 h-7 bg-sunglow rounded-lg flex items-center justify-center">
-              <FireIcon className="w-4 h-4 text-white" />
-            </div>
-            <span className="font-semibold text-primary">Floe</span>
-          </Link>
-          
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg hover:bg-surface-light transition-colors text-secondary"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? (
-              <XMarkIcon className="w-5 h-5" />
-            ) : (
-              <Bars3Icon className="w-5 h-5" />
-            )}
-          </button>
-        </div>
+      <header className={styles.mobileHeader}>
+        <Link href="/dashboard" className={styles.logo}>
+          <div className={styles.logoIcon}>
+            <FireIcon />
+          </div>
+          <span className={styles.logoText}>Floe</span>
+        </Link>
+        
+        <button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className={styles.mobileMenuButton}
+          aria-label="Toggle menu"
+        >
+          {mobileMenuOpen ? (
+            <XMarkIcon />
+          ) : (
+            <Bars3Icon />
+          )}
+        </button>
       </header>
 
       {/* Mobile Menu Overlay */}
       {mobileMenuOpen && (
-        <div className="lg:hidden fixed inset-0 z-40 flex">
+        <>
           <div 
-            className="fixed inset-0 bg-black/50" 
+            className={`${styles.mobileOverlay} ${mobileMenuOpen ? styles.open : ''}`}
             onClick={() => setMobileMenuOpen(false)}
           />
           
-          <div className="relative flex-1 flex flex-col max-w-xs w-full bg-surface">
-            <div className="h-14 flex items-center px-4 border-b border-border">
-              <span className="font-semibold text-lg text-primary">Menu</span>
+          <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.open : ''}`}>
+            <div className={styles.mobileMenuHeader}>
+              Menu
             </div>
             
-            <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+            <nav className={styles.mobileNav}>
               {navItems.map((item) => {
                 const isActive = pathname === item.href;
                 return (
@@ -280,66 +256,55 @@ export default function UnifiedNavigation() {
                     key={item.href}
                     href={item.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`
-                      flex items-center gap-3 px-3 py-3 rounded-lg
-                      transition-all duration-200
-                      ${isActive 
-                        ? 'bg-sunglow/10 text-sunglow' 
-                        : 'text-secondary hover:text-primary hover:bg-surface-light'
-                      }
-                    `}
+                    className={`${styles.navItem} ${isActive ? styles.active : ''}`}
                   >
-                    <item.icon className={`w-5 h-5 ${isActive ? 'text-sunglow' : ''}`} />
-                    <div>
-                      <p className="text-sm font-medium">{item.label}</p>
-                      <p className="text-xs text-muted">{item.description}</p>
+                    <item.icon className={styles.navIcon} />
+                    <div className={styles.navLabel}>
+                      <p className={styles.navLabelText}>{item.label}</p>
+                      <p className={styles.navLabelDescription}>{item.description}</p>
                     </div>
                   </Link>
                 );
               })}
             </nav>
             
-            <div className="p-3 space-y-2 border-t border-border">
+            <div className={styles.quickActions}>
               <button
                 onClick={() => {
                   toggleQuickAdd();
                   setMobileMenuOpen(false);
                 }}
-                className="w-full btn btn-primary btn-sm"
+                className={`${styles.quickActionButton} ${styles.primary}`}
               >
-                <PlusIcon className="w-4 h-4" />
-                New Task
+                <PlusIcon />
+                <span>New Task</span>
               </button>
               
               <button
                 onClick={handleLogout}
-                className="w-full btn btn-ghost btn-sm"
+                className={styles.quickActionButton}
               >
-                <ArrowRightStartOnRectangleIcon className="w-4 h-4" />
-                Logout
+                <ArrowRightStartOnRectangleIcon />
+                <span>Logout</span>
               </button>
             </div>
           </div>
-        </div>
+        </>
       )}
 
       {/* Mobile Bottom Navigation */}
-      <nav className="lg:hidden fixed bottom-0 left-0 right-0 h-16 bg-surface border-t border-border z-30">
-        <div className="h-full px-2 flex items-center justify-around">
+      <nav className={styles.mobileBottomNav}>
+        <div className={styles.mobileBottomNavItems}>
           {navItems.slice(0, 5).map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`
-                  flex flex-col items-center gap-1 px-3 py-2 rounded-lg
-                  transition-colors min-w-0
-                  ${isActive ? 'text-sunglow' : 'text-secondary'}
-                `}
+                className={`${styles.mobileBottomNavItem} ${isActive ? styles.active : ''}`}
               >
-                <item.icon className="w-5 h-5" />
-                <span className="text-2xs">{item.label}</span>
+                <item.icon />
+                <span>{item.label}</span>
               </Link>
             );
           })}
