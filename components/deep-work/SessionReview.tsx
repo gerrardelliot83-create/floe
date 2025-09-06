@@ -24,7 +24,7 @@ interface SessionReviewProps {
 }
 
 export default function SessionReview({ session, completedTasks, notes, onClose }: SessionReviewProps) {
-  const { tasks, updateSession } = useStore();
+  const { tasks } = useStore();
   const [rating, setRating] = useState(0);
   const [reflection, setReflection] = useState('');
   const [distractions, setDistractions] = useState('');
@@ -39,23 +39,23 @@ export default function SessionReview({ session, completedTasks, notes, onClose 
     : 0;
 
   const handleSave = () => {
-    // Save session data
-    updateSession(session.id, {
-      endTime: new Date().toISOString(),
-      completedTaskIds: completedTasks,
-      notes,
-      review: {
-        rating,
-        reflection,
-        distractions,
-        learnings,
-      },
-      stats: {
-        completionRate,
-        focusScore: calculateFocusScore(),
-        productivityScore: calculateProductivityScore(),
-      }
-    });
+    // TODO: Save session data when updateSession is implemented
+    // updateSession(session.id, {
+    //   endTime: new Date().toISOString(),
+    //   completedTaskIds: completedTasks,
+    //   notes,
+    //   review: {
+    //     rating,
+    //     reflection,
+    //     distractions,
+    //     learnings,
+    //   },
+    //   stats: {
+    //     completionRate,
+    //     focusScore: calculateFocusScore(),
+    //     productivityScore: calculateProductivityScore(),
+    //   }
+    // });
     
     onClose();
   };

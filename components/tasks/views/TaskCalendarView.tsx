@@ -88,7 +88,6 @@ export default function TaskCalendarView({ tasks, onTaskSelect }: TaskCalendarVi
                     className="text-xs p-1 rounded bg-surface hover:bg-sunglow/10 cursor-pointer truncate"
                   >
                     <span className={`inline-block w-2 h-2 rounded-full mr-1 ${
-                      task.priority === 'critical' ? 'bg-red-500' :
                       task.priority === 'high' ? 'bg-orange-500' :
                       task.priority === 'medium' ? 'bg-yellow-500' :
                       'bg-green-500'

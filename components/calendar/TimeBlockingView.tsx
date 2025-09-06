@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { 
-  ClockIcon, 
   PlusIcon, 
   TrashIcon,
   CheckIcon,
@@ -10,7 +9,7 @@ import {
   ChevronRightIcon
 } from '@heroicons/react/24/outline';
 import useStore from '@/lib/store';
-import { format, addDays, startOfDay, endOfDay, isSameDay, addMinutes, differenceInMinutes } from 'date-fns';
+import { format, addDays, startOfDay, endOfDay, isSameDay, addMinutes } from 'date-fns';
 import { CalendarEvent } from '@/lib/types/database';
 // import { ExtendedTask } from '@/lib/types/task.types';
 

@@ -3,9 +3,11 @@ export interface DeepWorkSession {
   startTime: string;
   endTime?: string;
   duration: number;
+  breakDuration: number;
   focusType: 'deep' | 'shallow' | 'creative' | 'meeting';
   taskIds?: string[];
   sessionGoal?: string;
+  goal?: string;
   completed: boolean;
   stats?: {
     focusScore: number;

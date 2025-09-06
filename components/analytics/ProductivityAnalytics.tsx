@@ -29,7 +29,7 @@ export default function ProductivityAnalytics() {
   const [timeRange, setTimeRange] = useState<TimeRange>('week');
 
   // Calculate date ranges
-  const now = new Date();
+  const now = useMemo(() => new Date(), []);
   const getDateRange = () => {
     switch (timeRange) {
       case 'week':
@@ -334,7 +334,6 @@ export default function ProductivityAnalytics() {
                 <div className="h-2 bg-surface rounded-full overflow-hidden">
                   <div
                     className={`h-full ${
-                      priority === 'critical' ? 'bg-red-500' :
                       priority === 'high' ? 'bg-orange-500' :
                       priority === 'medium' ? 'bg-yellow-500' :
                       'bg-green-500'

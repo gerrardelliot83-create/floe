@@ -9,7 +9,7 @@ import {
   SparklesIcon
 } from '@heroicons/react/24/outline';
 import useStore from '@/lib/store';
-import { ExtendedTask } from '@/lib/types/task.types';
+// import { ExtendedTask } from '@/lib/types/task.types';
 
 interface SessionPlanningProps {
   onStartSession: (config: SessionConfig) => void;
@@ -37,7 +37,7 @@ export default function SessionPlanning({ onStartSession, onClose }: SessionPlan
   const suggestedTasks = tasks.items.filter(task => {
     if (task.completed) return false;
     const isToday = task.due_date && new Date(task.due_date).toDateString() === new Date().toDateString();
-    const isHighPriority = task.priority === 'critical' || task.priority === 'high';
+    const isHighPriority = task.priority === 'high';
     return isToday || isHighPriority;
   });
 
@@ -56,7 +56,7 @@ export default function SessionPlanning({ onStartSession, onClose }: SessionPlan
   const getTotalEstimatedTime = () => {
     return selectedTasks.reduce((total, taskId) => {
       const task = tasks.items.find(t => t.id === taskId);
-      return total + (task?.estimatedMinutes || 30);
+      return total + 30; // Default 30 minutes per task
     }, 0);
   };
 
@@ -159,15 +159,8 @@ export default function SessionPlanning({ onStartSession, onClose }: SessionPlan
                             <div className="flex-1">
                               <p className="font-medium text-primary">{task.title}</p>
                               <div className="flex items-center gap-3 mt-1 text-xs text-secondary">
-                                {task.estimatedMinutes && (
-                                  <span className="flex items-center gap-1">
-                                    <ClockIcon className="w-3 h-3" />
-                                    {task.estimatedMinutes}m
-                                  </span>
-                                )}
                                 {task.priority && (
                                   <span className={`px-2 py-0.5 rounded ${
-                                    task.priority === 'critical' ? 'bg-red-500/10 text-red-500' :
                                     task.priority === 'high' ? 'bg-orange-500/10 text-orange-500' :
                                     task.priority === 'medium' ? 'bg-yellow-500/10 text-yellow-500' :
                                     'bg-green-500/10 text-green-500'
@@ -211,11 +204,6 @@ export default function SessionPlanning({ onStartSession, onClose }: SessionPlan
                             </div>
                             <div className="flex-1">
                               <p className="font-medium text-primary">{task.title}</p>
-                              {task.estimatedMinutes && (
-                                <p className="text-xs text-secondary mt-1">
-                                  Est. {task.estimatedMinutes} minutes
-                                </p>
-                              )}
                             </div>
                           </div>
                         </div>

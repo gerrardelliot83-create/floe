@@ -78,7 +78,7 @@ export default function TaskListView({ tasks, onTaskSelect }: TaskListViewProps)
     <div className="max-w-4xl mx-auto">
       <SortableContext items={taskIds} strategy={verticalListSortingStrategy}>
         {/* Priority/Overdue Tasks */}
-        {tasks.filter(t => t.priority === 'critical' || t.priority === 'high').length > 0 && (
+        {tasks.filter(t => t.priority === 'high').length > 0 && (
           <div className="mb-6 p-4 border-l-4 border-sunglow bg-sunglow/5 rounded-r-lg">
             <h3 className="font-semibold text-sunglow mb-3 flex items-center gap-2">
               <BoltIcon className="w-5 h-5" />
@@ -86,7 +86,7 @@ export default function TaskListView({ tasks, onTaskSelect }: TaskListViewProps)
             </h3>
             <div className="space-y-2">
               {tasks
-                .filter(t => t.priority === 'critical' || t.priority === 'high')
+                .filter(t => t.priority === 'high')
                 .map(task => (
                   <TaskItem 
                     key={task.id} 

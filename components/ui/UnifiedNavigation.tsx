@@ -23,9 +23,9 @@ export default function UnifiedNavigation() {
   const supabase = createClient();
   
   const { 
+    ui: { sidebarCollapsed },
     toggleCommandPalette, 
     toggleQuickAdd, 
-    sidebarCollapsed, 
     toggleSidebar,
     user 
   } = useStore();

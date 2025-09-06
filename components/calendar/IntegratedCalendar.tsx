@@ -268,7 +268,6 @@ export default function IntegratedCalendar() {
                     </p>
                   </div>
                   <span className={`px-2 py-1 text-xs rounded ${
-                    task.priority === 'critical' ? 'bg-red-500/10 text-red-500' :
                     task.priority === 'high' ? 'bg-orange-500/10 text-orange-500' :
                     task.priority === 'medium' ? 'bg-yellow-500/10 text-yellow-500' :
                     'bg-green-500/10 text-green-500'

@@ -12,9 +12,9 @@ interface TaskMatrixViewProps {
 export default function TaskMatrixView({ tasks, onTaskSelect }: TaskMatrixViewProps) {
   // Categorize tasks into Eisenhower Matrix quadrants
   const categorizeTask = (task: ExtendedTask): string => {
-    const isUrgent = task.priority === 'critical' || task.priority === 'high' ||
+    const isUrgent = task.priority === 'high' ||
       (task.due_date && new Date(task.due_date) <= new Date(Date.now() + 24 * 60 * 60 * 1000));
-    const isImportant = task.priority === 'critical' || task.priority === 'high';
+    const isImportant = task.priority === 'high';
 
     if (isUrgent && isImportant) return 'urgent-important';
     if (!isUrgent && isImportant) return 'not-urgent-important';

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { ExtendedTask, BoardColumn } from '@/lib/types/task.types';
-import { DndContext, DragEndEvent, DragOverlay, closestCenter } from '@dnd-kit/core';
+import { DndContext, DragStartEvent, DragEndEvent, DragOverlay, closestCenter } from '@dnd-kit/core';
 import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable';
 import TaskItem from '../TaskItem';
 import { PlusIcon } from '@heroicons/react/24/outline';
@@ -15,42 +15,23 @@ interface TaskBoardViewProps {
 export default function TaskBoardView({ tasks, onTaskSelect }: TaskBoardViewProps) {
   const [columns] = useState<BoardColumn[]>([
     {
-      id: 'backlog',
-      title: 'Backlog',
-      tasks: tasks.filter(t => !t.status || t.status === 'backlog'),
-      color: 'border-gray-500',
-    },
-    {
       id: 'todo',
       title: 'To Do',
-      tasks: tasks.filter(t => t.status === 'todo'),
+      tasks: tasks.filter(t => !t.completed),
       color: 'border-blue-500',
-    },
-    {
-      id: 'in-progress',
-      title: 'In Progress',
-      tasks: tasks.filter(t => t.status === 'in-progress'),
-      color: 'border-yellow-500',
-      limit: 3,
-    },
-    {
-      id: 'review',
-      title: 'Review',
-      tasks: tasks.filter(t => t.status === 'review'),
-      color: 'border-purple-500',
     },
     {
       id: 'done',
       title: 'Done',
-      tasks: tasks.filter(t => t.status === 'done' || t.completed),
+      tasks: tasks.filter(t => t.completed),
       color: 'border-green-500',
     },
   ]);
 
   const [activeId, setActiveId] = useState<string | null>(null);
 
-  const handleDragStart = (event: { active: { id: string } }) => {
-    setActiveId(event.active.id);
+  const handleDragStart = (event: DragStartEvent) => {
+    setActiveId(event.active.id as string);
   };
 
   const handleDragEnd = (event: DragEndEvent) => {

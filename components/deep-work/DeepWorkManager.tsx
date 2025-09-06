@@ -17,7 +17,7 @@ import {
 import { format, startOfWeek, endOfWeek, isWithinInterval } from 'date-fns';
 
 export default function DeepWorkManager() {
-  const { sessions, startSession, endSession, user } = useStore();
+  const { sessions, startSession, endSession } = useStore();
   const [showPlanning, setShowPlanning] = useState(false);
   const [showReview, setShowReview] = useState(false);
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
@@ -39,7 +39,7 @@ export default function DeepWorkManager() {
   const totalMinutesToday = todaySessions.reduce((total, s) => total + (s.duration || 0), 0);
   const totalMinutesWeek = weekSessions.reduce((total, s) => total + (s.duration || 0), 0);
   const averageCompletionRate = sessions.history.length > 0
-    ? sessions.history.reduce((sum, s) => sum + (s.stats?.completionRate || 0), 0) / sessions.history.length
+    ? sessions.history.reduce((sum, s) => sum + (s.stats?.tasksCompleted || 0), 0) / sessions.history.length
     : 0;
 
   const handleStartSession = (config: {
@@ -53,6 +53,7 @@ export default function DeepWorkManager() {
       id: Date.now().toString(),
       startTime: new Date().toISOString(),
       duration: config.duration,
+      breakDuration: config.breakDuration,
       taskIds: config.taskIds,
       focusType: config.focusType as 'deep' | 'shallow' | 'creative' | 'meeting',
       sessionGoal: config.sessionGoal,
@@ -71,7 +72,7 @@ export default function DeepWorkManager() {
 
   const handleReviewComplete = () => {
     if (sessions.active) {
-      endSession(sessions.active.id);
+      endSession();
     }
     setShowReview(false);
     setCompletedTasks([]);
@@ -175,7 +176,7 @@ export default function DeepWorkManager() {
             <TrophyIcon className="w-5 h-5 text-amber-500" />
             <span className="text-xs text-secondary">Current Streak</span>
           </div>
-          <div className="text-2xl font-bold text-primary">{sessions.streak || 0}</div>
+          <div className="text-2xl font-bold text-primary">{0}</div>
           <div className="text-sm text-secondary">Consecutive days</div>
         </div>
       </div>
@@ -236,8 +237,8 @@ export default function DeepWorkManager() {
                   <div className="flex items-center gap-4 mt-1 text-sm text-secondary">
                     <span>{format(new Date(session.startTime), 'MMM d, h:mm a')}</span>
                     <span>{session.duration} min</span>
-                    {session.completedTaskIds && (
-                      <span>{session.completedTaskIds.length} tasks completed</span>
+                    {session.stats?.tasksCompleted && (
+                      <span>{session.stats.tasksCompleted} tasks completed</span>
                     )}
                   </div>
                 </div>
@@ -248,15 +249,6 @@ export default function DeepWorkManager() {
                         {session.stats.focusScore}
                       </div>
                       <div className="text-xs text-secondary">Focus Score</div>
-                    </div>
-                  )}
-                  {session.review?.rating && (
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <span key={i} className={i < session.review.rating ? 'text-sunglow' : 'text-gray-300'}>
-                          ★
-                        </span>
-                      ))}
                     </div>
                   )}
                 </div>

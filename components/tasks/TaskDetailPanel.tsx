@@ -1,10 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { XMarkIcon, ClockIcon, CalendarIcon, TagIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
+import { XMarkIcon, ClockIcon, ChatBubbleLeftIcon } from '@heroicons/react/24/outline';
 import useStore from '@/lib/store';
 import dynamic from 'next/dynamic';
 import { format } from 'date-fns';
+import type { OutputData } from '@editorjs/editorjs';
 
 const TaskEditor = dynamic(() => import('./TaskEditor'), { ssr: false });
 
@@ -21,8 +22,8 @@ export default function TaskDetailPanel({ taskId, onClose }: TaskDetailPanelProp
   const [priority, setPriority] = useState(task?.priority || 'medium');
   const [dueDate, setDueDate] = useState(task?.due_date || '');
   const [tags, setTags] = useState<string[]>(task?.tags || []);
-  const [estimatedMinutes, setEstimatedMinutes] = useState(task?.estimatedMinutes || 30);
-  const [energy, setEnergy] = useState(task?.energy || 'medium');
+  const [estimatedMinutes, setEstimatedMinutes] = useState(30);
+  const [energy, setEnergy] = useState('medium');
   const [content, setContent] = useState(task?.content || {});
 
   if (!task) return null;
@@ -33,8 +34,6 @@ export default function TaskDetailPanel({ taskId, onClose }: TaskDetailPanelProp
       priority,
       due_date: dueDate,
       tags,
-      estimatedMinutes,
-      energy,
       content,
       updated_at: new Date().toISOString(),
     });
@@ -92,12 +91,11 @@ export default function TaskDetailPanel({ taskId, onClose }: TaskDetailPanelProp
             <select
               value={priority}
               onChange={(e) => {
-                setPriority(e.target.value as 'critical' | 'high' | 'medium' | 'low');
+                setPriority(e.target.value as 'high' | 'medium' | 'low');
                 handleSave();
               }}
               className="input w-full"
             >
-              <option value="critical">Critical</option>
               <option value="high">High</option>
               <option value="medium">Medium</option>
               <option value="low">Low</option>
@@ -196,9 +194,9 @@ export default function TaskDetailPanel({ taskId, onClose }: TaskDetailPanelProp
           <label className="block text-sm font-medium text-secondary mb-1">Description</label>
           <div className="border border-border-dark rounded-lg p-2 min-h-[200px]">
             <TaskEditor
-              content={content}
+              data={content as unknown as OutputData}
               onChange={(newContent) => {
-                setContent(newContent);
+                setContent(newContent as unknown as Record<string, unknown>);
                 handleSave();
               }}
             />

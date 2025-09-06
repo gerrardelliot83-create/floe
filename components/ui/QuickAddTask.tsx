@@ -10,7 +10,7 @@ import { parseNaturalLanguage } from '@/lib/utils/natural-language';
 
 export default function QuickAddTask() {
   const supabase = createClient();
-  const { quickAddOpen, toggleQuickAdd, addTask, user } = useStore();
+  const { ui: { quickAddOpen }, toggleQuickAdd, addTask, user } = useStore();
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);

@@ -2,7 +2,7 @@ import { addDays, addWeeks, addMonths, setHours, setMinutes, nextMonday, nextTue
 
 interface ParsedTask {
   title: string;
-  priority?: 'critical' | 'high' | 'medium' | 'low';
+  priority?: 'high' | 'medium' | 'low';
   dueDate?: Date;
   tags?: string[];
   recurring?: {
@@ -27,7 +27,7 @@ export function parseNaturalLanguage(input: string): ParsedTask {
   }
 
   // Extract priority
-  const priorityRegex = /\b(critical|high|medium|low)\s*priority\b/i;
+  const priorityRegex = /\b(high|medium|low)\s*priority\b/i;
   const priorityMatch = title.match(priorityRegex);
   if (priorityMatch) {
     priority = priorityMatch[1].toLowerCase() as ParsedTask['priority'];

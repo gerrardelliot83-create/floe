@@ -17,7 +17,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function DashboardPage() {
-  const { streak, getStreakStatus, calculateLevel } = useStreaks();
+  const { streak, calculateLevel } = useStreaks();
   const [todaySessions, setTodaySessions] = useState(0);
   const [tasksCompleted, setTasksCompleted] = useState(0);
   const [userName, setUserName] = useState('');

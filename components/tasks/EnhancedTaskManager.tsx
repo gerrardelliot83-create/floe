@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors, DragEndEvent } from '@dnd-kit/core';
-import { SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from '@dnd-kit/sortable';
+import { sortableKeyboardCoordinates } from '@dnd-kit/sortable';
 import useStore from '@/lib/store';
 import { ExtendedTask, TaskView } from '@/lib/types/task.types';
 import TaskListView from './views/TaskListView';
@@ -24,7 +24,7 @@ import {
 } from '@heroicons/react/24/outline';
 
 export default function EnhancedTaskManager() {
-  const { tasks, setTaskFilter, selectTask, updateTask } = useStore();
+  const { tasks } = useStore();
   const [currentView, setCurrentView] = useState<TaskView>('today');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null);
@@ -115,7 +115,6 @@ export default function EnhancedTaskManager() {
       case 'inbox':
         filtered = filtered.filter(task => 
           !task.completed && 
-          !task.project_id &&
           !task.parent_id
         );
         break;

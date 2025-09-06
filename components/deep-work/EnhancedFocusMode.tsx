@@ -11,7 +11,7 @@ import {
   ForwardIcon,
   SpeakerWaveIcon,
   SpeakerXMarkIcon,
-  Cog6ToothIcon
+  // Cog6ToothIcon
 } from '@heroicons/react/24/outline';
 import useStore from '@/lib/store';
 import { DeepWorkSession } from '@/lib/types/session.types';
@@ -31,11 +31,11 @@ export default function EnhancedFocusMode({ session, onEndSession, onMinimize }:
   const [completedTasks, setCompletedTasks] = useState<string[]>([]);
   const [currentTaskIndex, setCurrentTaskIndex] = useState(0);
   const [soundEnabled, setSoundEnabled] = useState(true);
-  const [showSettings, setShowSettings] = useState(false);
+  // const [showSettings, setShowSettings] = useState(false);
   const [notes, setNotes] = useState('');
 
   const currentTask = session.taskIds && session.taskIds.length > 0
-    ? tasks.items.find(t => t.id === session.taskIds[currentTaskIndex])
+    ? tasks.items.find(t => t.id === session.taskIds![currentTaskIndex])
     : null;
 
   // Timer logic
@@ -262,16 +262,9 @@ export default function EnhancedFocusMode({ session, onEndSession, onMinimize }:
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <p className="font-medium text-primary">{currentTask.title}</p>
-                    {currentTask.description && (
-                      <p className="text-sm text-secondary mt-1">{currentTask.description}</p>
-                    )}
                     <div className="flex items-center gap-3 mt-2 text-xs text-secondary">
-                      {currentTask.estimatedMinutes && (
-                        <span>Est: {currentTask.estimatedMinutes} min</span>
-                      )}
                       {currentTask.priority && (
                         <span className={`px-2 py-0.5 rounded ${
-                          currentTask.priority === 'critical' ? 'bg-red-500/10 text-red-500' :
                           currentTask.priority === 'high' ? 'bg-orange-500/10 text-orange-500' :
                           currentTask.priority === 'medium' ? 'bg-yellow-500/10 text-yellow-500' :
                           'bg-green-500/10 text-green-500'

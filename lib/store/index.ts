@@ -1,10 +1,11 @@
 import { create } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { Task, DeepWorkSession, CalendarEvent } from '@/lib/types/database';
+import { Task, CalendarEvent } from '@/lib/types/database';
+import { DeepWorkSession } from '@/lib/types/session.types';
 
 interface TaskFilter {
   view: 'today' | 'inbox' | 'projects' | 'matrix' | 'board';
-  priority?: 'critical' | 'high' | 'medium' | 'low';
+  priority?: 'high' | 'medium' | 'low';
   projectId?: string;
   searchQuery?: string;
   showCompleted: boolean;

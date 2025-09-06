@@ -18,7 +18,7 @@ interface TaskProjectsViewProps {
 
 export default function TaskProjectsView({ tasks, onTaskSelect }: TaskProjectsViewProps) {
   const [expandedProjects, setExpandedProjects] = useState<Set<string>>(new Set());
-  const [selectedProjectId, setSelectedProjectId] = useState<string | null>(null);
+  const [selectedProjectId] = useState<string | null>(null);
 
   // Mock projects - in real app, fetch from database
   const projects: Project[] = [
@@ -37,12 +37,14 @@ export default function TaskProjectsView({ tasks, onTaskSelect }: TaskProjectsVi
     setExpandedProjects(newExpanded);
   };
 
-  const getProjectTasks = (projectId: string) => {
-    return tasks.filter(task => task.project_id === projectId);
+  const getProjectTasks = (projectId: string): ExtendedTask[] => {
+    // TODO: Implement project filtering when project_id is available
+    return [] as ExtendedTask[];
   };
 
   const getUnassignedTasks = () => {
-    return tasks.filter(task => !task.project_id);
+    // TODO: Return all tasks for now until project_id is available
+    return tasks;
   };
 
   const ProjectSection = ({ project }: { project: Project }) => {

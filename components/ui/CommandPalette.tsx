@@ -22,7 +22,7 @@ import {
 export default function CommandPalette() {
   const router = useRouter();
   const { 
-    commandPaletteOpen, 
+    ui: { commandPaletteOpen },
     toggleCommandPalette, 
     toggleQuickAdd,
     setSelectedView,
