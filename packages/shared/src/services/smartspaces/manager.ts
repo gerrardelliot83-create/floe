@@ -96,14 +96,15 @@ export class SmartSpacesManager {
   // Delete a smart space
   static async deleteSmartSpace(spaceId: string, userId: string): Promise<void> {
     try {
-      // First, remove this space from all cards
-      await supabase
-        .from('cards')
-        .update({
-          smart_space_ids: supabase.sql`array_remove(smart_space_ids, '${spaceId}'::uuid)`
-        })
-        .eq('user_id', userId)
-        .contains('smart_space_ids', [spaceId]);
+      // First, remove this space from all cards that contain it
+      const { error: rpcError } = await supabase.rpc('remove_smart_space_from_all_cards', {
+        space_id_param: spaceId,
+        user_id_param: userId
+      });
+
+      if (rpcError) {
+        throw new Error(`Failed to remove space from cards: ${rpcError.message}`);
+      }
 
       // Then delete the space
       const { error } = await supabase
@@ -231,25 +232,18 @@ export class SmartSpacesManager {
         }
       }
 
-      // Add matching cards to the space
-      if (matchingCardIds.length > 0) {
-        await supabase
-          .from('cards')
-          .update({
-            smart_space_ids: supabase.sql`array_append(COALESCE(smart_space_ids, ARRAY[]::uuid[]), '${space.id}'::uuid)`
-          })
-          .in('id', matchingCardIds)
-          .not('smart_space_ids', 'cs', `{${space.id}}`);
-      }
+      // Update smart space assignments in a single atomic operation
+      if (matchingCardIds.length > 0 || nonMatchingCardIds.length > 0) {
+        const { error: batchError } = await supabase.rpc('batch_update_smart_space_cards', {
+          space_id_param: space.id,
+          user_id_param: space.user_id,
+          add_card_ids: matchingCardIds,
+          remove_card_ids: nonMatchingCardIds
+        });
 
-      // Remove non-matching cards from the space
-      if (nonMatchingCardIds.length > 0) {
-        await supabase
-          .from('cards')
-          .update({
-            smart_space_ids: supabase.sql`array_remove(smart_space_ids, '${space.id}'::uuid)`
-          })
-          .in('id', nonMatchingCardIds);
+        if (batchError) {
+          throw new Error(`Failed to update smart space assignments: ${batchError.message}`);
+        }
       }
 
       console.log(`Organized ${matchingCardIds.length} cards into space "${space.name}"`);

@@ -368,3 +368,81 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER update_cards_search_vector
   BEFORE INSERT OR UPDATE ON public.cards
   FOR EACH ROW EXECUTE FUNCTION update_search_vector();
+
+-- Smart space array management functions
+CREATE OR REPLACE FUNCTION add_card_to_smart_space(
+  card_id_param UUID,
+  space_id_param UUID,
+  user_id_param UUID
+)
+RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  UPDATE public.cards
+  SET smart_space_ids = array_append(COALESCE(smart_space_ids, ARRAY[]::uuid[]), space_id_param)
+  WHERE id = card_id_param
+    AND user_id = user_id_param
+    AND NOT (space_id_param = ANY(COALESCE(smart_space_ids, ARRAY[]::uuid[])));
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION remove_card_from_smart_space(
+  card_id_param UUID,
+  space_id_param UUID,
+  user_id_param UUID
+)
+RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  UPDATE public.cards
+  SET smart_space_ids = array_remove(smart_space_ids, space_id_param)
+  WHERE id = card_id_param
+    AND user_id = user_id_param;
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION remove_smart_space_from_all_cards(
+  space_id_param UUID,
+  user_id_param UUID
+)
+RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  UPDATE public.cards
+  SET smart_space_ids = array_remove(smart_space_ids, space_id_param)
+  WHERE user_id = user_id_param
+    AND space_id_param = ANY(smart_space_ids);
+END;
+$$;
+
+CREATE OR REPLACE FUNCTION batch_update_smart_space_cards(
+  space_id_param UUID,
+  user_id_param UUID,
+  add_card_ids UUID[],
+  remove_card_ids UUID[]
+)
+RETURNS VOID
+LANGUAGE plpgsql
+AS $$
+BEGIN
+  -- Add cards to space
+  IF array_length(add_card_ids, 1) > 0 THEN
+    UPDATE public.cards
+    SET smart_space_ids = array_append(COALESCE(smart_space_ids, ARRAY[]::uuid[]), space_id_param)
+    WHERE id = ANY(add_card_ids)
+      AND user_id = user_id_param
+      AND NOT (space_id_param = ANY(COALESCE(smart_space_ids, ARRAY[]::uuid[])));
+  END IF;
+
+  -- Remove cards from space
+  IF array_length(remove_card_ids, 1) > 0 THEN
+    UPDATE public.cards
+    SET smart_space_ids = array_remove(smart_space_ids, space_id_param)
+    WHERE id = ANY(remove_card_ids)
+      AND user_id = user_id_param;
+  END IF;
+END;
+$$;

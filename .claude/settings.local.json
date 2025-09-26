@@ -17,7 +17,9 @@
       "Bash(fi)",
       "Bash(done)",
       "Bash(tree:*)",
-      "Bash(npx turbo run build:*)"
+      "Bash(npx turbo run build:*)",
+      "Bash(npm run:*)",
+      "Bash(node:*)"
     ],
     "deny": [],
     "ask": []
