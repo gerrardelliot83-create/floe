@@ -1,0 +1,176 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Ultra-minimalist global styles */
+@layer base {
+  html {
+    font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background-light text-text-primary-light;
+    @apply dark:bg-background-dark dark:text-text-primary-dark;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  /* Remove default margins and padding */
+  h1, h2, h3, h4, h5, h6, p, ul, ol, li, blockquote, figure {
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Minimal scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-text-tertiary-light/20;
+    @apply dark:bg-text-tertiary-dark/20;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-text-secondary-light/30;
+    @apply dark:bg-text-secondary-dark/30;
+  }
+}
+
+@layer components {
+  /* Minimalist button variants */
+  .btn-primary {
+    @apply bg-text-primary-light text-background-light;
+    @apply dark:bg-text-primary-dark dark:text-background-dark;
+    @apply px-md py-sm text-sm font-medium;
+    @apply transition-opacity duration-150;
+    @apply hover:opacity-70;
+    @apply active:opacity-50;
+    border: none;
+    border-radius: 0;
+  }
+
+  .btn-secondary {
+    @apply border border-text-primary-light text-text-primary-light;
+    @apply dark:border-text-primary-dark dark:text-text-primary-dark;
+    @apply px-md py-sm text-sm font-medium;
+    @apply transition-opacity duration-150;
+    @apply hover:opacity-70;
+    @apply active:opacity-50;
+    background: transparent;
+    border-radius: 0;
+  }
+
+  .btn-ghost {
+    @apply text-text-primary-light;
+    @apply dark:text-text-primary-dark;
+    @apply px-md py-sm text-sm font-medium;
+    @apply transition-opacity duration-150;
+    @apply hover:opacity-70;
+    @apply active:opacity-50;
+    border: none;
+    background: transparent;
+  }
+
+  /* Minimal input styling */
+  .input-minimal {
+    @apply border-0 border-b border-border-light;
+    @apply dark:border-border-dark;
+    @apply bg-transparent text-base;
+    @apply px-0 py-sm;
+    @apply focus:border-text-primary-light;
+    @apply dark:focus:border-text-primary-dark;
+    @apply focus:outline-none;
+    @apply transition-colors duration-150;
+  }
+
+  .input-minimal::placeholder {
+    @apply text-text-tertiary-light;
+    @apply dark:text-text-tertiary-dark;
+  }
+
+  /* Card styling */
+  .card-minimal {
+    @apply bg-surface-light;
+    @apply dark:bg-surface-dark;
+    @apply mb-xl;
+    padding: 0;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+  }
+
+  /* Typography */
+  .text-display {
+    @apply text-display font-light leading-tight;
+    @apply text-text-primary-light;
+    @apply dark:text-text-primary-dark;
+    letter-spacing: -0.02em;
+  }
+
+  .text-heading {
+    @apply text-3xl font-normal leading-tight;
+    @apply text-text-primary-light;
+    @apply dark:text-text-primary-dark;
+    letter-spacing: -0.01em;
+  }
+
+  .text-body {
+    @apply text-base leading-relaxed;
+    @apply text-text-primary-light;
+    @apply dark:text-text-primary-dark;
+  }
+
+  .text-caption {
+    @apply text-xs leading-normal;
+    @apply text-text-tertiary-light;
+    @apply dark:text-text-tertiary-dark;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+}
+
+@layer utilities {
+  /* Layout utilities */
+  .container-minimal {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  @media (max-width: 768px) {
+    .container-minimal {
+      padding: 0 24px;
+    }
+  }
+
+  .section-spacing {
+    @apply mb-xxxl;
+  }
+
+  .content-spacing {
+    @apply mb-xl;
+  }
+
+  /* Animation utilities */
+  .fade-in {
+    animation: fadeIn 150ms ease-out;
+  }
+
+  .slide-in {
+    animation: slideIn 250ms ease-out;
+  }
+}
