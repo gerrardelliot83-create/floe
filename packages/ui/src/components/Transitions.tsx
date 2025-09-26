@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect, useRef, cloneElement } from 'react';
 import { fadeIn, fadeOut, slideIn, scaleIn, scaleOut } from '../utils/animations';
 

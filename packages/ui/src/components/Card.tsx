@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import type { Card as CardType } from '@floe/shared';
 

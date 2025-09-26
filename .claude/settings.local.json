@@ -8,7 +8,14 @@
       "Bash(npm run build:*)",
       "Bash(npx tsc:*)",
       "Bash(NODE_OPTIONS='--max-old-space-size=4096' npm run build)",
-      "Bash(export NODE_OPTIONS='--max-old-space-size=4096')"
+      "Bash(export NODE_OPTIONS='--max-old-space-size=4096')",
+      "Bash(for:*)",
+      "Bash(do)",
+      "Bash(if [ -f \"$file\" ])",
+      "Bash(! grep -q \"^''use client''\" \"$file\")",
+      "Bash(then)",
+      "Bash(fi)",
+      "Bash(done)"
     ],
     "deny": [],
     "ask": []

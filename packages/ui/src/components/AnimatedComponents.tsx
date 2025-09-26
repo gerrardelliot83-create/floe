@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useEffect, useRef, useState, forwardRef } from 'react';
 import { fadeIn, slideIn, scaleIn, bounceIn, staggeredAnimation, ANIMATION_DURATIONS } from '../utils/animations';
 

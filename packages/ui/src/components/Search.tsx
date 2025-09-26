@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { SearchBar } from './SearchBar';
 import { Button, IconButton } from './Button';

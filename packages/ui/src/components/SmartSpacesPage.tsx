@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useEffect } from 'react';
 import { SmartSpaceGrid } from './SmartSpace';
 import { CreateSmartSpaceModal } from './SmartSpaceRuleBuilder';

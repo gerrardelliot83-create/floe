@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { useSyncStatus, useConnectionStatus } from '@floe/shared';
 import { Button } from './Button';

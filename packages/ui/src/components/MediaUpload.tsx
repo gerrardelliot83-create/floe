@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useRef, useCallback } from 'react';
 import { Button } from './Button';
 import type { MediaFile, UploadProgress, ProcessingStatus } from '@floe/shared';
