@@ -5,7 +5,7 @@ import { Session, User, AuthError } from '@supabase/supabase-js';
 import { supabase } from '@floe/supabase';
 import type { Profile } from '@floe/shared';
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null;
   session: Session | null;
   profile: Profile | null;
