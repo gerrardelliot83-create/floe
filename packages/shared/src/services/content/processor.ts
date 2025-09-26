@@ -167,7 +167,8 @@ export class ContentProcessor {
         cards.push(card);
       } catch (error) {
         console.error(`Failed to process file ${file.name}:`, error);
-        warnings.push(`Failed to process ${file.name}: ${error.message}`);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        warnings.push(`Failed to process ${file.name}: ${errorMessage}`);
       }
     }
 
@@ -220,7 +221,8 @@ export class ContentProcessor {
           );
       }
     } catch (error) {
-      throw new Error(`Upload failed: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Upload failed: ${errorMessage}`);
     }
 
     const cardData: Partial<Card> = {

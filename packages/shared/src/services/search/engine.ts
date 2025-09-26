@@ -71,7 +71,8 @@ export class SearchEngine {
       };
     } catch (error) {
       console.error('Search failed:', error);
-      throw new Error(`Search failed: ${error.message}`);
+      const errorMessage = error instanceof Error ? error.message : String(error);
+      throw new Error(`Search failed: ${errorMessage}`);
     }
   }
 
