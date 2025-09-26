@@ -4,7 +4,7 @@ import { UploadThingError } from 'uploadthing/server';
 const f = createUploadthing();
 
 // Auth function - check if user is authenticated
-const auth = async (req: Request) => {
+const auth = async (_req: Request) => {
   // TODO: Implement actual auth check with Supabase
   // For now, return a mock user ID
   return { id: 'user-123' };
