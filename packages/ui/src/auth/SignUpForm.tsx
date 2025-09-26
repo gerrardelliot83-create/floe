@@ -46,6 +46,7 @@ export function SignUpForm({ onSuccess, onToggleMode, className = '' }: SignUpFo
         setError(error.message);
       } else {
         setSuccess(true);
+        onSuccess?.();
       }
     } catch (err) {
       setError('An unexpected error occurred');
