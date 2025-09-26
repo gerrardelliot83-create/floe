@@ -59,7 +59,7 @@ export class ContentProcessor {
       title: content.title || this.extractTitleFromContent(content.content),
       content: ContentExtractor.cleanText(content.content),
       metadata: {
-        wordCount: ContentExtractor.countWords ? ContentExtractor.countWords(content.content) : 0,
+        wordCount: ContentExtractor.countWords(content.content),
         createdBy: 'user'
       }
     };

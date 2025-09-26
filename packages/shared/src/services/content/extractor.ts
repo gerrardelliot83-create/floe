@@ -208,7 +208,7 @@ export class ContentExtractor {
     return Math.ceil(wordCount / wordsPerMinute);
   }
 
-  private static countWords(text: string): number {
+  static countWords(text: string): number {
     return text ? text.trim().split(/\s+/).length : 0;
   }
 
