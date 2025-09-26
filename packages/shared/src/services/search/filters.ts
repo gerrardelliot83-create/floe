@@ -244,7 +244,7 @@ export class FilterManager {
       return Object.entries(tagCounts)
         .map(([tag, count]) => ({ tag, count }))
         .sort((a, b) => b.count - a.count)
-        .slice(0, limit);
+        .slice(0, _limit);
     } catch (error) {
       console.error('Failed to get popular tags:', error);
       return [];
