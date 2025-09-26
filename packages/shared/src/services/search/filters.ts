@@ -235,7 +235,7 @@ export class FilterManager {
   }
 
   // Get popular tags for tag filter
-  static async getPopularTags(userId: string, limit: number = 20): Promise<Array<{ tag: string; count: number }>> {
+  static async getPopularTags(_userId: string, limit: number = 20): Promise<Array<{ tag: string; count: number }>> {
     try {
       // This would be implemented with proper aggregation in production
       const tagCounts: Record<string, number> = {};
@@ -252,7 +252,7 @@ export class FilterManager {
   }
 
   // Get popular domains for domain filter
-  static async getPopularDomains(userId: string, limit: number = 10): Promise<Array<{ domain: string; count: number }>> {
+  static async getPopularDomains(_userId: string, limit: number = 10): Promise<Array<{ domain: string; count: number }>> {
     try {
       // Similar to tags, this would use proper SQL aggregation
       return [];
