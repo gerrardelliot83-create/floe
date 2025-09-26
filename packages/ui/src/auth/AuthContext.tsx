@@ -148,7 +148,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
     });
 
-    return { data, error };
+    if (data?.user && !error) {
+      // User was created successfully
+      setUser(data.user);
+      if (data.session) {
+        setSession(data.session);
+      }
+    }
+
+    return { error: error || undefined };
   }
 
   async function signIn(email: string, password: string) {
@@ -157,7 +165,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
       password,
     });
 
-    return { data, error };
+    if (data?.user && !error) {
+      setUser(data.user);
+      if (data.session) {
+        setSession(data.session);
+      }
+    }
+
+    return { error: error || undefined };
   }
 
   async function signInWithProvider(provider: 'google' | 'apple' | 'github') {
@@ -168,7 +183,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
     });
 
-    return { data, error };
+    return { error: error || undefined };
   }
 
   async function signInWithMagicLink(email: string) {
@@ -179,7 +194,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       }
     });
 
-    return { data, error };
+    return { error: error || undefined };
   }
 
   async function signOut() {
@@ -203,7 +218,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setProfile(data);
     }
 
-    return { data, error };
+    return { error: error || undefined };
   }
 
   async function resetPassword(email: string) {
@@ -211,7 +226,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       redirectTo: `${window.location.origin}/auth/reset-password`
     });
 
-    return { data, error };
+    return { error: error || undefined };
   }
 
   async function updatePassword(password: string) {
@@ -219,7 +234,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       password
     });
 
-    return { data, error };
+    return { error: error || undefined };
   }
 
   const value: AuthContextType = {
