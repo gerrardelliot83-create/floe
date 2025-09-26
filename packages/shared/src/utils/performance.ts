@@ -267,22 +267,7 @@ export class PerformanceMonitor {
   }
 }
 
-export function createLazyComponent<T extends React.ComponentType<any>>(
-  importFn: () => Promise<{ default: T }>,
-  fallback?: React.ReactNode
-): React.LazyExoticComponent<T> {
-  const LazyComponent = React.lazy(importFn);
-
-  if (fallback) {
-    return React.forwardRef<any, React.ComponentProps<T>>((props, ref) => (
-      <React.Suspense fallback={fallback}>
-        <LazyComponent {...props} ref={ref} />
-      </React.Suspense>
-    )) as React.LazyExoticComponent<T>;
-  }
-
-  return LazyComponent;
-}
+// Note: React-specific lazy loading moved to UI package to avoid React dependency in shared utils
 
 export class ResourcePreloader {
   private preloadedResources = new Set<string>();

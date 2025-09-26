@@ -1,5 +1,4 @@
 import { createClient } from '@supabase/supabase-js';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Environment variables that work across platforms
 const supabaseUrl =
@@ -15,9 +14,20 @@ const supabaseAnonKey =
 // Detect platform
 const isReactNative = typeof navigator !== 'undefined' && navigator.product === 'ReactNative';
 
+// Dynamic import for AsyncStorage only when needed
+let storage: any = undefined;
+if (isReactNative) {
+  try {
+    const AsyncStorage = require('@react-native-async-storage/async-storage').default;
+    storage = AsyncStorage;
+  } catch (e) {
+    console.warn('AsyncStorage not available');
+  }
+}
+
 export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
   auth: {
-    storage: isReactNative ? AsyncStorage : undefined,
+    storage: storage,
     autoRefreshToken: true,
     persistSession: true,
     detectSessionInUrl: !isReactNative,

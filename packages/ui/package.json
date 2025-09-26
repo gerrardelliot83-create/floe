@@ -1,8 +1,8 @@
 {
   "name": "@floe/ui",
   "version": "1.0.0",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
@@ -11,13 +11,13 @@
   },
   "dependencies": {
     "react": "^18.3.1",
-    "react-native": "0.76.1",
     "class-variance-authority": "^0.7.1",
-    "clsx": "^2.1.1"
+    "clsx": "^2.1.1",
+    "@floe/shared": "^1.0.0",
+    "@floe/supabase": "^1.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.3.18",
-    "@types/react-native": "^0.73.0",
     "typescript": "^5.6.3",
     "eslint": "^9.15.0",
     "@typescript-eslint/eslint-plugin": "^8.15.0",

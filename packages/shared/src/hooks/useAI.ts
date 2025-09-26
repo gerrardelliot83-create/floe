@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from 'react';
+import React, { useState, useCallback, useRef, useEffect } from 'react';
 import { ClaudeAIService } from '../services/ai/claude';
 import type {
   AIProcessingOptions,
@@ -285,7 +285,7 @@ export function useAutoAI(
   }, [content, enabled, processContent, processingOptions, processingDelay]);
 
   // Process content when it changes
-  React.useEffect(() => {
+  useEffect(() => {
     debouncedProcess();
 
     return () => {
@@ -339,7 +339,7 @@ export function useSmartSpaceSuggestions(
   }, [enabled, card, availableSpaces, suggestSpaces]);
 
   // Auto-refresh when card or spaces change
-  React.useEffect(() => {
+  useEffect(() => {
     refresh();
   }, [refresh]);
 

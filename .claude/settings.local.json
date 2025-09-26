@@ -2,7 +2,13 @@
   "permissions": {
     "allow": [
       "WebSearch",
-      "Bash(npm run type-check:*)"
+      "Bash(npm run type-check:*)",
+      "Bash(npm install)",
+      "Bash(npm run build:web:*)",
+      "Bash(npm run build:*)",
+      "Bash(npx tsc:*)",
+      "Bash(NODE_OPTIONS='--max-old-space-size=4096' npm run build)",
+      "Bash(export NODE_OPTIONS='--max-old-space-size=4096')"
     ],
     "deny": [],
     "ask": []

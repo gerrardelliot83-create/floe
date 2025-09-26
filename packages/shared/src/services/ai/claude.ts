@@ -15,7 +15,7 @@ export interface AIProcessingResult {
   summary?: string;
   keywords: string[];
   tags: string[];
-  suggestedSpaces: string[];
+  suggestedSpaces?: string[];
   contentAnalysis?: {
     topics: string[];
     sentiment: 'positive' | 'neutral' | 'negative';
@@ -77,10 +77,12 @@ export class ClaudeAIService {
       const processingTime = Date.now() - startTime;
 
       return {
+        keywords: [],
+        tags: [],
         ...result,
         processingTime,
         confidence: this.calculateConfidence(result, content)
-      };
+      } as AIProcessingResult;
 
     } catch (error) {
       console.error('Claude AI processing failed:', error);
@@ -89,10 +91,12 @@ export class ClaudeAIService {
       const processingTime = Date.now() - startTime;
 
       return {
+        keywords: [],
+        tags: [],
         ...fallbackResult,
         processingTime,
         confidence: 0.3
-      };
+      } as AIProcessingResult;
     }
   }
 
@@ -117,7 +121,7 @@ Content to organize:
 Title: ${card.title}
 Content: ${card.content}
 Type: ${card.type}
-Tags: ${card.tags?.join(', ') || 'None'}
+Tags: ${card.ai_tags?.join(', ') || 'None'}
 
 Available Smart Spaces:
 ${availableSpaces.map(space =>
@@ -329,8 +333,8 @@ Return your response as valid JSON with the requested fields.`;
       prompt += `\nExisting title: ${existingCard.title}`;
     }
 
-    if (existingCard?.tags?.length) {
-      prompt += `\nExisting tags: ${existingCard.tags.join(', ')}`;
+    if (existingCard?.ai_tags?.length) {
+      prompt += `\nExisting tags: ${existingCard.ai_tags.join(', ')}`;
     }
 
     const requestedFields = [];

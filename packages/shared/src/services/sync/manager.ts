@@ -3,6 +3,8 @@ import { RealtimeManager, RealtimeCallbacks } from './realtime';
 import { createOfflineStorage, OfflineStorage, SyncOperation, ConflictResolution, SyncResult } from './offline';
 import type { Card, SmartSpace, Profile } from '../../types';
 
+export type { SyncResult } from './offline';
+
 export interface SyncManagerConfig {
   userId: string;
   enableRealtime: boolean;
