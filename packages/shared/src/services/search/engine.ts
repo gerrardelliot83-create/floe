@@ -1,5 +1,5 @@
 import { supabase } from '@floe/supabase';
-import type { Card, SearchResult } from '../../types';
+import type { SearchResult } from '../../types';
 
 export interface SearchOptions {
   userId: string;
