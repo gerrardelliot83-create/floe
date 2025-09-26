@@ -277,7 +277,7 @@ export class SearchEngine {
       throw new Error(`Similarity search failed: ${error.message}`);
     }
 
-    return (results || []).map(result => ({
+    return (results || []).map((result: any) => ({
       id: result.id,
       title: result.title,
       content: result.content,
