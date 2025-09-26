@@ -30,7 +30,12 @@ export class ContentProcessor {
     try {
       switch (capture.type) {
         case 'note':
-          return await this.processNote(capture.content, options);
+          // Ensure content has the required structure for note processing
+          const noteContent = {
+            content: capture.content.content || capture.content.text || '',
+            title: capture.content.title
+          };
+          return await this.processNote(noteContent, options);
 
         case 'link':
           return await this.processLink(capture.content.url, options);
