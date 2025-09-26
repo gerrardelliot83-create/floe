@@ -16,7 +16,7 @@ export interface FilterGroup {
 
 export class FilterManager {
   // Get available filters based on user's content
-  static async getAvailableFilters(userId: string): Promise<FilterGroup[]> {
+  static async getAvailableFilters(_userId: string): Promise<FilterGroup[]> {
     try {
       // In a real implementation, this would query the database
       // to get actual counts for each filter option
