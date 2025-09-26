@@ -33,8 +33,8 @@ export const ourFileRouter = {
   documentUpload: f({
     pdf: { maxFileSize: '16MB' },
     text: { maxFileSize: '1MB' },
-    'application/msword': { maxFileSize: '10MB' },
-    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': { maxFileSize: '10MB' },
+    'application/msword': { maxFileSize: '8MB' },
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document': { maxFileSize: '8MB' },
   })
     .middleware(async ({ req }) => {
       const user = await auth(req);
