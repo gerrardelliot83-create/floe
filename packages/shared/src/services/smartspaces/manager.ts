@@ -147,10 +147,7 @@ export class SmartSpacesManager {
     try {
       const { data: cards, error } = await supabase
         .from('cards')
-        .select(`
-          id, title, content, type, thumbnail_url, created_at, updated_at,
-          ai_tags, manual_tags, is_pinned, source_domain, ai_category
-        `)
+        .select('*')
         .eq('user_id', userId)
         .contains('smart_space_ids', [spaceId])
         .is('deleted_at', null)
