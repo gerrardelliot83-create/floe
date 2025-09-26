@@ -1,5 +1,3 @@
-import type { CardType } from '../../types';
-
 export interface SearchFilter {
   id: string;
   name: string;
