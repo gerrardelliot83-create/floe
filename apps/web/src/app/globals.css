@@ -115,7 +115,7 @@
 
   /* Typography */
   .text-display {
-    @apply text-display font-light leading-tight;
+    @apply text-5xl font-light leading-tight;
     @apply text-text-primary-light;
     @apply dark:text-text-primary-dark;
     letter-spacing: -0.02em;

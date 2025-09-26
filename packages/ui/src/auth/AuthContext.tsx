@@ -34,6 +34,30 @@ interface AuthProviderProps {
   children: ReactNode;
 }
 
+// Protected Route Component
+export function ProtectedRoute({ children }: { children: ReactNode }) {
+  const { user, loading } = useAuth();
+
+  useEffect(() => {
+    if (!loading && !user) {
+      // Redirect to sign in if not authenticated
+      if (typeof window !== 'undefined') {
+        window.location.href = '/auth/signin';
+      }
+    }
+  }, [user, loading]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!user) {
+    return null;
+  }
+
+  return <>{children}</>;
+}
+
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);

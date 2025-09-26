@@ -15,7 +15,8 @@
       "Bash(! grep -q \"^''use client''\" \"$file\")",
       "Bash(then)",
       "Bash(fi)",
-      "Bash(done)"
+      "Bash(done)",
+      "Bash(tree:*)"
     ],
     "deny": [],
     "ask": []

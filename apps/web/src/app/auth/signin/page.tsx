@@ -2,7 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { SignInForm, SignUpForm } from '@floe/ui/auth/SignInForm';
+import { SignInForm } from '@floe/ui/auth/SignInForm';
+import { SignUpForm } from '@floe/ui/auth/SignUpForm';
 
 export default function SignInPage() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
