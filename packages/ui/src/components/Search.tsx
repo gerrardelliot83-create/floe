@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { SearchBar } from './SearchBar';
-import { Button, IconButton } from './Button';
+import { Button } from './Button';
 import { Card } from './Card';
 import { Grid } from './Grid';
 import { LoadingState, EmptyState } from './Layout';
