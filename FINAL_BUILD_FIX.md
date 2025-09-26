@@ -1,8 +1,22 @@
 # ✅ Floe Build Issues - FULLY RESOLVED
 
-## Latest Fix Applied (Commit a59c348)
+## Latest Fix Applied (Commit cf331f5)
 
-### Issue: AuthContextType Export Error
+### Issue 1: Card.tsx Unused Parameters
+**File:** `packages/ui/src/components/Card.tsx`
+**Line:** 15
+**Problem:** The `onPin` and `onDelete` parameters were declared but never used
+**Solution:** Prefixed with underscore to indicate intentionally unused (reserved for future use)
+
+```typescript
+// Before:
+export function Card({ card, onPress, onLongPress, onPin, onDelete, className = '' }: CardProps) {
+
+// After:
+export function Card({ card, onPress, onLongPress, onPin: _onPin, onDelete: _onDelete, className = '' }: CardProps) {
+```
+
+### Issue 2: AuthContextType Export Error
 **File:** `packages/ui/src/auth/AuthContext.tsx`
 **Line:** 8
 **Problem:** The `AuthContextType` interface was not exported but was being re-exported from `auth/index.ts`

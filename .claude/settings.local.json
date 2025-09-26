@@ -21,7 +21,8 @@
       "Bash(npm run:*)",
       "Bash(node:*)",
       "Bash(echo \"=== $file ===\")",
-      "Bash(head:*)"
+      "Bash(head:*)",
+      "Bash(xargs:*)"
     ],
     "deny": [],
     "ask": []

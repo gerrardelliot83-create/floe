@@ -12,7 +12,7 @@ interface CardProps {
   className?: string;
 }
 
-export function Card({ card, onPress, onLongPress, onPin, onDelete, className = '' }: CardProps) {
+export function Card({ card, onPress, onLongPress, onPin: _onPin, onDelete: _onDelete, className = '' }: CardProps) {
   const formatTimeAgo = (date: string) => {
     const now = new Date();
     const past = new Date(date);
