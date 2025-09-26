@@ -1,6 +1,6 @@
 import React from 'react';
 import { SmartSpaceManager } from '@floe/ui';
-import { Container, PageHeader } from '@floe/ui';
+import { Container } from '@floe/ui';
 import { useAuth } from '@floe/ui';
 
 export default function SmartSpacesPage() {

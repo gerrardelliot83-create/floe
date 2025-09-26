@@ -35,8 +35,14 @@ interface AuthProviderProps {
 }
 
 // Protected Route Component
-export function ProtectedRoute({ children }: { children: ReactNode }) {
-  const { user, loading } = useAuth();
+export function ProtectedRoute({
+  children,
+  requireOnboarding = false
+}: {
+  children: ReactNode;
+  requireOnboarding?: boolean;
+}) {
+  const { user, loading, profile } = useAuth();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -45,7 +51,14 @@ export function ProtectedRoute({ children }: { children: ReactNode }) {
         window.location.href = '/auth/signin';
       }
     }
-  }, [user, loading]);
+
+    if (!loading && user && requireOnboarding && profile && !profile.onboarding_completed) {
+      // Redirect to onboarding if required and not completed
+      if (typeof window !== 'undefined') {
+        window.location.href = '/auth/onboarding';
+      }
+    }
+  }, [user, loading, profile, requireOnboarding]);
 
   if (loading) {
     return <div>Loading...</div>;
