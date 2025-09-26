@@ -176,7 +176,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function signInWithProvider(provider: 'google' | 'apple' | 'github') {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
         redirectTo: `${window.location.origin}/auth/callback`
@@ -187,7 +187,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function signInWithMagicLink(email: string) {
-    const { data, error } = await supabase.auth.signInWithOtp({
+    const { error } = await supabase.auth.signInWithOtp({
       email,
       options: {
         emailRedirectTo: `${window.location.origin}/auth/callback`
@@ -222,7 +222,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function resetPassword(email: string) {
-    const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    const { error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: `${window.location.origin}/auth/reset-password`
     });
 
@@ -230,7 +230,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   async function updatePassword(password: string) {
-    const { data, error } = await supabase.auth.updateUser({
+    const { error } = await supabase.auth.updateUser({
       password
     });
 
