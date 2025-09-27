@@ -336,7 +336,7 @@ function FilterComponent({ filter, onChange }: FilterComponentProps) {
                     const currentValue = Array.isArray(filter.value) ? filter.value : [];
                     const newValue = e.target.checked
                       ? [...currentValue, option.value]
-                      : currentValue.filter(v => v !== option.value);
+                      : currentValue.filter((v: any) => v !== option.value);
                     onChange(newValue.length > 0 ? newValue : undefined);
                   }}
                   className="w-4 h-4"
